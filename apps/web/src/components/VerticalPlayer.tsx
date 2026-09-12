@@ -14,6 +14,20 @@ interface VerticalPlayerProps {
   onMuteToggle: () => void;
 }
 
+interface SubtitleData {
+  time_offset_ms: number;
+  duration_ms: number;
+  text: string;
+}
+
+const resolveMediaUrl = (url?: string): string => {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) return url;
+  const base = import.meta.env.BASE_URL || '/';
+  const clean = url.startsWith('/') ? url.slice(1) : url;
+  return `${base}${clean}`;
+};
+
 const AI_SUBTITLES: Record<string, { start: number; end: number; text: string }[]> = {
   'vid-ai-1': [
     { start: 0, end: 3, text: '🎵 [Atmospheric cyberpunk synths swell]' },
@@ -170,7 +184,7 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
     // Only load if the actual audio source path has changed
     if (lastLoadedAudioSrcRef.current !== video.audio_url) {
       lastLoadedAudioSrcRef.current = video.audio_url;
-      audioRef.current.src = video.audio_url;
+      audioRef.current.src = resolveMediaUrl(video.audio_url);
       audioRef.current.load();
     }
 
@@ -418,7 +432,7 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
       {video.audio_url && (
         <audio
           ref={audioRef}
-          src={video.audio_url}
+          src={resolveMediaUrl(video.audio_url)}
           loop
           muted={isMuted}
         />
@@ -431,7 +445,7 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
           <div 
             className="w-full h-full bg-cover bg-center transition-transform ease-out"
             style={{ 
-              backgroundImage: `url(${video.video_url})`,
+              backgroundImage: `url(${resolveMediaUrl(video.video_url)})`,
               transform: isPlaying 
                 ? `scale(${1.08 + Math.sin(currentTime / 2.5) * 0.04}) translate(${Math.cos(currentTime / 3) * 1.5}%, ${Math.sin(currentTime / 3) * 1.5}%)`
                 : 'scale(1.05) translate(0%, 0%)',
@@ -464,7 +478,7 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
       ) : (
         <video
           ref={videoRef}
-          src={video.video_url}
+          src={resolveMediaUrl(video.video_url)}
           loop
           playsInline
           muted={isMuted || !!video.audio_url}
