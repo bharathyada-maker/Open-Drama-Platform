@@ -485,6 +485,11 @@ export const DramaHub: React.FC<DramaHubProps> = ({ setTab, onVideoSelect, onCre
                       <img
                         src={video.thumbnail_url || video.video_url}
                         alt={video.title}
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80';
+                        }}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />

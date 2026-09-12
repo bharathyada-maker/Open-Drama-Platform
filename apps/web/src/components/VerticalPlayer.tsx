@@ -9,7 +9,6 @@ interface VerticalPlayerProps {
   isActive: boolean;
   onCommentsClick: (videoId: string) => void;
   onCreatorClick: (creatorId: string) => void;
-  onNextEpisode?: () => void;
   isMuted: boolean;
   onMuteToggle: () => void;
 }
@@ -80,7 +79,7 @@ const AI_SUBTITLES: Record<string, { start: number; end: number; text: string }[
   ]
 };
 
-export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive, onCommentsClick, onCreatorClick, onNextEpisode, isMuted, onMuteToggle }) => {
+export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive, onCommentsClick, onCreatorClick, isMuted, onMuteToggle }) => {
   const { user } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -646,20 +645,6 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
           </button>
           <span className="text-[11px] font-bold text-slate-300 drop-shadow">Share</span>
         </div>
-
-        {/* Next Video/Story Button */}
-        {onNextEpisode && (
-          <div className="flex flex-col items-center gap-1">
-            <button
-              onClick={(e) => { e.stopPropagation(); onNextEpisode(); }}
-              className="p-3 rounded-full bg-gradient-to-r from-accent-rose to-accent-purple border border-accent-rose hover:opacity-95 shadow-lg transition-all transform hover:scale-105 active:scale-95 animate-pulse"
-              title="Next Video"
-            >
-              <ChevronDown className="w-5.5 h-5.5 text-white stroke-[3px]" />
-            </button>
-            <span className="text-[10px] font-bold text-accent-rose drop-shadow">Next</span>
-          </div>
-        )}
 
         {/* Moderation / Report Button */}
         <button

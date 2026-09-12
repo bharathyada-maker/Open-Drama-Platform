@@ -225,7 +225,7 @@ seriesConfigs.forEach((cfg) => {
       description: ep.desc,
       video_url: url,
       audio_url: audioUrl,
-      thumbnail_url: ep.video_url || `https://images.unsplash.com/photo-${REAL_UNSPLASH_IDS[vidIdCounter % REAL_UNSPLASH_IDS.length]}?auto=format&fit=crop&w=400&h=250&q=80`,
+      thumbnail_url: ep.video_url || `https://images.unsplash.com/${REAL_UNSPLASH_IDS[vidIdCounter % REAL_UNSPLASH_IDS.length]}?auto=format&fit=crop&w=400&h=250&q=80`,
       content_type: 'episode',
       language: cfg.lang,
       genre: cfg.genre,
@@ -292,7 +292,7 @@ shortCreators.forEach((cfg: any, idx) => {
     description: cfg.desc,
     video_url: url,
     audio_url: audioUrl,
-    thumbnail_url: cfg.video_url || `https://images.unsplash.com/photo-${REAL_UNSPLASH_IDS[(idx + 5) % REAL_UNSPLASH_IDS.length]}?auto=format&fit=crop&w=400&h=250&q=80`,
+    thumbnail_url: cfg.video_url || `https://images.unsplash.com/${REAL_UNSPLASH_IDS[(idx + 5) % REAL_UNSPLASH_IDS.length]}?auto=format&fit=crop&w=400&h=250&q=80`,
     content_type: 'short',
     language: cfg.lang,
     genre: cfg.genre,
@@ -345,7 +345,7 @@ viralCreators.forEach((cfg: any, idx) => {
     description: cfg.desc,
     video_url: url,
     audio_url: audioUrl,
-    thumbnail_url: `https://images.unsplash.com/photo-${REAL_UNSPLASH_IDS[(idx + 11) % REAL_UNSPLASH_IDS.length]}?auto=format&fit=crop&w=400&h=250&q=80`,
+    thumbnail_url: `https://images.unsplash.com/${REAL_UNSPLASH_IDS[(idx + 11) % REAL_UNSPLASH_IDS.length]}?auto=format&fit=crop&w=400&h=250&q=80`,
     content_type: 'short',
     language: cfg.lang,
     genre: cfg.genre,
@@ -438,14 +438,14 @@ aiVideos.forEach((v) => {
   });
 });
 
-// 5. Open Drama Platform - Core Segment Flagship 5-Minute Shorts (Love, Action, Comedy)
+// 5. Open Drama Platform - Core Segment Flagship 5-Minute Shorts (Love, Action, Comedy, Devotional, Nature, Animals)
 const openDramaSegmentVideos: Video[] = [
   {
     id: 'vid-drama-love-1',
     creator_id: 'usr-1',
     title: 'The Last Metro Car',
     description: 'Two former sweethearts step into the same midnight train car during a torrential rainstorm. Five stops left before the line ends to confront their past.',
-    video_url: '/videos/waves.mp4',
+    video_url: '/images/shibuya_rain_night.jpg',
     audio_url: '/audio/lofi.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -471,7 +471,7 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-5',
     title: 'Coffee Cup Coordinates',
     description: 'A barista secretly pens mystery travel coordinates on the morning cup of a shy regular, unaware that today is their last day in the city.',
-    video_url: '/videos/coffee-shop.mp4',
+    video_url: '/images/minimal_coding_setup.jpg',
     audio_url: '/audio/ambient.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -523,7 +523,7 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-2',
     title: 'Rooftop Courier: Dusk Run',
     description: 'An urban parkour courier carrying a temperature-sensitive antidote races across city rooftops under sunset to escape shadows before the timer runs out.',
-    video_url: '/videos/typing.mp4',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/finish_line.mp4',
     audio_url: '/audio/lofi.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -549,7 +549,7 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-6',
     title: 'The Interview from Hell',
     description: 'An applicant realizes five minutes into a high-stakes executive interview that they accidentally applied for an undercover clown position.',
-    video_url: '/videos/coffee-shop.mp4',
+    video_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
     audio_url: '/audio/lofi2.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -575,7 +575,7 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-9',
     title: 'Smart Home Mutiny',
     description: 'A developer tries to prepare a simple breakfast while his newly updated smart home assistant enters passive-aggressive conflict mode over his lifestyle choices.',
-    video_url: '/videos/waterfall.mp4',
+    video_url: 'https://www.w3schools.com/html/movie.mp4',
     audio_url: '/audio/lofi.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -601,8 +601,8 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-8',
     title: 'Sacred Dawn at Varanasi',
     description: 'A solitary temple bell-ringer awakens the misty river ghats with dawn chanting before millions awaken.',
-    video_url: '/videos/waves.mp4',
-    audio_url: '/audio/lofi.mp3',
+    video_url: '/coverr-test.mp4',
+    audio_url: '/audio/ambient.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
     language: 'en',
@@ -627,7 +627,7 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-7',
     title: 'Ganga Aarti at Twilight',
     description: 'A breathtaking dance of glowing brass fire lamps on sacred riverwaters amidst chanting and cymbals.',
-    video_url: '/videos/coffee-shop.mp4',
+    video_url: 'https://vjs.zencdn.net/v/oceans.mp4',
     audio_url: '/audio/ambient.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -653,7 +653,7 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-4',
     title: 'Misty Redwood Canopy',
     description: 'Morning fog cascading through ancient 2,000-year-old sequoia giants with serene acoustic bird echoes.',
-    video_url: '/videos/waterfall.mp4',
+    video_url: '/videos/cloudy-sky.mp4',
     audio_url: '/audio/ambient.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -679,7 +679,7 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-1',
     title: 'Glacial Mountain Cascades',
     description: 'Pure crystalline meltwater tumbling over volcanic basalt columns in high alpine canyons.',
-    video_url: '/videos/cloudy-sky.mp4',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/rafting.mp4',
     audio_url: '/audio/lofi2.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -705,7 +705,7 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-3',
     title: 'Alpine Snow Leopard Hunt',
     description: 'A cinematic study of the elusive ghost of the mountains navigating snowy Himalayan ridges at twilight.',
-    video_url: '/videos/typing.mp4',
+    video_url: '/images/savanna_cheetah.jpg',
     audio_url: '/audio/lofi.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -731,7 +731,7 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-10',
     title: 'Pacific Humpback Song',
     description: 'A mother humpback whale guides her newborn calf through deep azure coastal trenches.',
-    video_url: '/videos/waves.mp4',
+    video_url: 'https://vjs.zencdn.net/v/oceans.mp4',
     audio_url: '/audio/ambient.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
@@ -748,9 +748,9 @@ const openDramaSegmentVideos: Video[] = [
     like_count: 154000,
     comment_count: 10400,
     share_count: 39000,
-    created_at: new Date(Date.now() - 3.7 * 24 * 3600000).toISOString(),
+    created_at: new Date(Date.now() - 1.6 * 24 * 3600000).toISOString(),
     updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 3.7 * 24 * 3600000).toISOString()
+    published_at: new Date(Date.now() - 1.6 * 24 * 3600000).toISOString()
   }
 ];
 
@@ -800,7 +800,7 @@ const SEED_AI_ANALYSIS: AIAnalysis[] = SEED_VIDEOS.slice(0, 5).map((v, i) => ({
 }));
 
 export const initializeLocalDb = () => {
-  const needsInit = !localStorage.getItem(DB_PREFIX + 'initialized_v22') || 
+  const needsInit = !localStorage.getItem(DB_PREFIX + 'initialized_v25') || 
                     !localStorage.getItem(DB_PREFIX + 'videos') || 
                     JSON.parse(localStorage.getItem(DB_PREFIX + 'videos') || '[]').length === 0;
 
@@ -825,7 +825,7 @@ export const initializeLocalDb = () => {
     setStorageItem('ai_analysis', SEED_AI_ANALYSIS);
     setStorageItem('content_events', []);
     setStorageItem('currentUser', SEED_PROFILES[0]); // Logged in as Alex Rivera by default for immediate preview
-    localStorage.setItem(DB_PREFIX + 'initialized_v22', 'true');
+    localStorage.setItem(DB_PREFIX + 'initialized_v25', 'true');
   }
 };
 

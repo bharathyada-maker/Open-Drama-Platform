@@ -72,8 +72,8 @@ export const VerticalFeed: React.FC<VerticalFeedProps> = ({ videos, onCommentsCl
 
   return (
     <div className="relative w-full h-full">
-      {/* OUTSIDE-OF-SCREEN NAVIGATION CONTROLS DOCK (DESKTOP) */}
-      <div className="hidden sm:flex fixed right-4 md:right-[calc(50%-270px)] top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-3">
+      {/* DESKTOP OUTSIDE-OF-SCREEN NAVIGATION CONTROLS DOCK */}
+      <div className="hidden lg:flex fixed left-[calc(50%+220px)] top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-3">
         {/* Previous Video Button */}
         <button
           onClick={() => handleScrollTo(activeIndex - 1)}
@@ -83,7 +83,7 @@ export const VerticalFeed: React.FC<VerticalFeedProps> = ({ videos, onCommentsCl
               ? 'bg-bg-surface/40 border-white/5 text-text-muted cursor-not-allowed opacity-35'
               : 'bg-bg-surface/90 hover:bg-white border-white/10 hover:border-white text-white hover:text-black hover:scale-110 active:scale-95 shadow-accent-rose/10'
           }`}
-          title="Previous Video (Arrow Up)"
+          title="Previous Video (Arrow Up / k)"
         >
           <ChevronUp className="w-5 h-5 transition-transform group-hover:-translate-y-0.5" />
         </button>
@@ -103,38 +103,30 @@ export const VerticalFeed: React.FC<VerticalFeedProps> = ({ videos, onCommentsCl
               ? 'bg-bg-surface/40 border-white/5 text-text-muted cursor-not-allowed opacity-35'
               : 'bg-bg-surface/90 hover:bg-white border-white/10 hover:border-white text-white hover:text-black hover:scale-110 active:scale-95 shadow-accent-rose/10'
           }`}
-          title="Next Video (Arrow Down)"
+          title="Next Video (Arrow Down / j)"
         >
           <ChevronDown className="w-5 h-5 transition-transform group-hover:translate-y-0.5" />
         </button>
       </div>
 
-      {/* MOBILE OUTSIDE-OF-CONTENT FLOATING CONTROLS */}
-      <div className="sm:hidden fixed right-2 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-2">
+      {/* MOBILE / NARROW SCREEN FLOATING PILL (TOP-LEFT, ZERO OVERLAP WITH ACTIONS) */}
+      <div className="lg:hidden fixed top-20 left-4 z-40 flex items-center gap-1.5 bg-black/75 backdrop-blur-xl border border-white/15 px-3 py-1.5 rounded-full shadow-2xl text-white">
         <button
           onClick={() => handleScrollTo(activeIndex - 1)}
           disabled={activeIndex === 0}
-          className={`w-9 h-9 rounded-full border backdrop-blur-lg flex items-center justify-center shadow-lg transition-all ${
-            activeIndex === 0
-              ? 'bg-black/30 border-white/5 text-white/30 cursor-not-allowed'
-              : 'bg-black/60 border-white/20 text-white active:scale-90'
-          }`}
-          title="Previous"
+          className="p-1 rounded-full text-white/80 hover:text-white hover:bg-white/20 active:scale-90 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+          title="Previous Video"
         >
           <ChevronUp className="w-4 h-4" />
         </button>
-        <div className="px-2 py-0.5 rounded-md bg-black/60 border border-white/15 text-[9px] font-bold text-white/90">
-          {activeIndex + 1}/{videos.length}
-        </div>
+        <span className="text-xs font-bold text-white tracking-wide px-1">
+          {activeIndex + 1} <span className="text-text-muted font-normal">/ {videos.length}</span>
+        </span>
         <button
           onClick={() => handleScrollTo(activeIndex + 1)}
           disabled={activeIndex === videos.length - 1}
-          className={`w-9 h-9 rounded-full border backdrop-blur-lg flex items-center justify-center shadow-lg transition-all ${
-            activeIndex === videos.length - 1
-              ? 'bg-black/30 border-white/5 text-white/30 cursor-not-allowed'
-              : 'bg-black/60 border-white/20 text-white active:scale-90'
-          }`}
-          title="Next"
+          className="p-1 rounded-full text-white/80 hover:text-white hover:bg-white/20 active:scale-90 disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+          title="Next Video"
         >
           <ChevronDown className="w-4 h-4" />
         </button>
@@ -159,11 +151,6 @@ export const VerticalFeed: React.FC<VerticalFeedProps> = ({ videos, onCommentsCl
               onCreatorClick={onCreatorClick}
               isMuted={isMuted}
               onMuteToggle={() => setIsMuted(!isMuted)}
-              onNextEpisode={
-                idx < videos.length - 1
-                  ? () => handleNextEpisodeTransition(idx)
-                  : undefined
-              }
             />
           </div>
         ))}

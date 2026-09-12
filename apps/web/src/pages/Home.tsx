@@ -202,7 +202,16 @@ export const Home: React.FC<HomeProps> = ({ setTab, onVideoSelect, onCreatorSele
                   className="bg-bg-surface border border-border-dark/60 rounded-2xl overflow-hidden hover:border-slate-500 transition-all cursor-pointer group shadow-sm flex flex-col h-full"
                 >
                   <div className="relative aspect-video w-full overflow-hidden bg-black">
-                    <img src={video.thumbnail_url || ''} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <img 
+                      src={video.thumbnail_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80'} 
+                      alt="" 
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80';
+                      }}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                    />
                     <span className="absolute bottom-1 right-1.5 bg-black/75 px-1.5 py-0.5 rounded text-[9px] font-bold font-mono text-slate-100 border border-white/5">
                       {Math.floor(video.duration_seconds / 60)}:{(video.duration_seconds % 60).toString().padStart(2, '0')}
                     </span>
@@ -284,7 +293,16 @@ export const Home: React.FC<HomeProps> = ({ setTab, onVideoSelect, onCreatorSele
                   className="bg-bg-surface border border-border-dark/60 rounded-2xl overflow-hidden hover:border-slate-500 transition-all cursor-pointer group shadow-sm flex flex-col h-full"
                 >
                   <div className="relative aspect-video w-full overflow-hidden bg-black">
-                    <img src={video.thumbnail_url || ''} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <img 
+                      src={video.thumbnail_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80'} 
+                      alt="" 
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80';
+                      }}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                    />
                     <span className="absolute bottom-1 right-1.5 bg-black/75 px-1.5 py-0.5 rounded text-[9px] font-bold font-mono text-slate-100 border border-white/5">
                       {Math.floor(video.duration_seconds / 60)}:{(video.duration_seconds % 60).toString().padStart(2, '0')}
                     </span>
