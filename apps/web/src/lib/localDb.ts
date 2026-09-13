@@ -63,21 +63,19 @@ const SEED_CREATORS: CreatorProfile[] = SEED_PROFILES.slice(0, 11).map((p, i) =>
 }));
 
 const SEED_SERIES: Series[] = [
-  { id: 'ser-1', creator_id: 'usr-1', title: 'NEON HORIZONS', description: 'A visually breathtaking vertical journey exploring architectural marvels, hidden alleys, and neon cultures of Tokyo and Mumbai.', cover_url: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Documentary', status: 'published', created_at: new Date(Date.now() - 25 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'ser-2', creator_id: 'usr-3', title: 'ACOUSTIC SPACES', description: 'Capturing high-fidelity field recordings and soothing instrumental music inside stunning architectural landmarks.', cover_url: 'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=800&h=500&q=80', language: 'te', genre: 'Thriller', status: 'published', created_at: new Date(Date.now() - 20 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'ser-3', creator_id: 'usr-2', title: 'THE CREATIVE MIND', description: 'An intimate look into the daily routines, coding set-ups, and artistic processes of world-class creators and software builders.', cover_url: 'https://images.unsplash.com/photo-1527891751199-7225231a68dd?auto=format&fit=crop&w=800&h=500&q=80', language: 'hi', genre: 'Comedy', status: 'published', created_at: new Date(Date.now() - 15 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'ser-4', creator_id: 'usr-5', title: 'DIGITAL CANVAS', description: 'Documenting modern artists who combine traditional fine arts with machine-learning generative algorithms and physical canvas.', cover_url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Romance', status: 'published', created_at: new Date(Date.now() - 12 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'ser-5', creator_id: 'usr-9', title: 'ECHOES OF THE SEA', description: 'A calming cinematic study of ocean shores, marine survival, and coastal communities.', cover_url: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Mystery', status: 'published', created_at: new Date(Date.now() - 10 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'ser-6', creator_id: 'usr-ai', title: 'SAVANNA SURVIVAL', description: 'An awe-inspiring vertical journey documenting survival stories of the African Savanna. Experience migrations and predator-prey cycles.', cover_url: '/images/savanna_migration.jpg', language: 'en', genre: 'Animal', status: 'published', created_at: new Date(Date.now() - 8 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() }
+  { id: 'ser-1', creator_id: 'usr-ai', title: 'SAVANNA SURVIVAL', description: 'An awe-inspiring vertical journey documenting survival stories of the African Savanna. Experience migrations, cheetah hunts, and water sanctuaries.', cover_url: '/images/savanna_migration.jpg', language: 'en', genre: 'Animals', status: 'published', created_at: new Date(Date.now() - 25 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'ser-2', creator_id: 'usr-2', title: 'THE CREATIVE MIND & CODE', description: 'An intimate look into modern software craftsmanship, developer workstations, and algorithmic computational art.', cover_url: '/images/minimal_coding_setup.jpg', language: 'en', genre: 'Documentary', status: 'published', created_at: new Date(Date.now() - 20 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'ser-3', creator_id: 'usr-10', title: 'WILD EXPEDITIONS', description: 'Adrenaline-packed athletic endurance and extreme nature expeditions pushing human and animal limits.', cover_url: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Action', status: 'published', created_at: new Date(Date.now() - 15 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'ser-4', creator_id: 'usr-4', title: 'OCEAN & NATURE SANCTUARIES', description: 'A calming cinematic study of ocean shores, marine life, and high-altitude sunset skies.', cover_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Nature', status: 'published', created_at: new Date(Date.now() - 12 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'ser-5', creator_id: 'usr-6', title: 'PLAYFUL PAWS', description: 'Heartwarming, joyful moments following playful puppy adventures in the great outdoors.', cover_url: '/images/puppies_autumn.jpg', language: 'en', genre: 'Comedy', status: 'published', created_at: new Date(Date.now() - 10 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() }
 ];
 
 const SEED_SEASONS: Season[] = [
-  { id: 'seas-1', series_id: 'ser-1', season_number: 1, title: 'Season 1: Reflections', description: 'Capturing rain and light.', created_at: SEED_SERIES[0].created_at },
-  { id: 'seas-2', series_id: 'ser-2', season_number: 1, title: 'Season 1: Binaural Echoes', description: 'Recording structural acoustics.', created_at: SEED_SERIES[1].created_at },
-  { id: 'seas-3', series_id: 'ser-3', season_number: 1, title: 'Season 1: Coding Philosophy', description: 'Interviews with modern coders.', created_at: SEED_SERIES[2].created_at },
-  { id: 'seas-4', series_id: 'ser-4', season_number: 1, title: 'Season 1: Generative Art', description: 'Fine lines and code canvas.', created_at: SEED_SERIES[3].created_at },
-  { id: 'seas-5', series_id: 'ser-5', season_number: 1, title: 'Season 1: Tidal Cycles', description: 'Coastal waves and slow drone flights.', created_at: SEED_SERIES[4].created_at },
-  { id: 'seas-6', series_id: 'ser-6', season_number: 1, title: 'Season 1: Grassland Cycles', description: 'Migration, hunting, and water sanctuary.', created_at: new Date(Date.now() - 8 * 24 * 3600000).toISOString() }
+  { id: 'seas-1', series_id: 'ser-1', season_number: 1, title: 'Season 1: Grassland Cycles', description: 'Migration, hunting, and water sanctuary.', created_at: SEED_SERIES[0].created_at },
+  { id: 'seas-2', series_id: 'ser-2', season_number: 1, title: 'Season 1: Craft & Logic', description: 'Software architecture and visual geometry.', created_at: SEED_SERIES[1].created_at },
+  { id: 'seas-3', series_id: 'ser-3', season_number: 1, title: 'Season 1: Adrenaline Waves', description: 'Whitewater rafting and championship sprints.', created_at: SEED_SERIES[2].created_at },
+  { id: 'seas-4', series_id: 'ser-4', season_number: 1, title: 'Season 1: Coastal Tides', description: 'Coral reefs and coastal shorelines.', created_at: SEED_SERIES[3].created_at },
+  { id: 'seas-5', series_id: 'ser-5', season_number: 1, title: 'Season 1: Puppy Joy', description: 'Golden puppies and beach games.', created_at: SEED_SERIES[4].created_at }
 ];
 
 // Verified, Royalty-Free CC0, Creator-Licensed Media Catalog
@@ -167,12 +165,12 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/dog.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=400&h=250&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&h=250&q=80',
     audio_url: '/audio/lofi2.mp3',
-    title: 'Wild Alaskan Grizzly: The Salmon Run',
-    desc: 'A wild grizzly bear navigates misty Alaskan river rapids, waiting patiently for leaping salmon in the prime migration.',
-    genre: 'Animals',
-    tags: ['animals', 'grizzly', 'wildlife', 'alaska', 'river']
+    title: 'Golden Paws: Ocean Beach Fetch',
+    desc: 'A joyful retriever dog dashing along the sunny shore and catching frisbees in pure exhilaration.',
+    genre: 'Comedy',
+    tags: ['comedy', 'dog', 'animals', 'beach', 'playful']
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/sea_turtle.mp4',
@@ -238,105 +236,85 @@ const seriesConfigs = [
   {
     seriesId: 'ser-1',
     seasonId: 'seas-1',
-    creator: 'usr-1',
-    title: 'NEON HORIZONS',
+    creator: 'usr-ai',
+    title: 'SAVANNA SURVIVAL',
     lang: 'en',
-    genre: 'Documentary',
+    genre: 'Animals',
     episodes: [
-      { num: 1, title: 'Tokyo Blue Hour', desc: 'Exploring the hidden Shibuya side alleys as neon lights begin to reflect in the rain.' },
-      { num: 2, title: 'Chasing Shadows in Gachibowli', desc: 'Cinematic visual loops showcasing the architectural contrast of tech parks and tombs.' },
-      { num: 3, title: 'Times Square Reflection', desc: 'A high-framerate study of human movement and digital signage under Manhattan rain.' },
-      { num: 4, title: 'Mumbai Monsoons', desc: 'Aesthetic visual tracks of local train windows and sea link bridges reflecting urban yellow street lamps.' },
-      { num: 5, title: 'Iceland Ice Caves', desc: 'A majestic journey capturing ambient light refracting through ancient glaciers.' }
+      { num: 1, catalogIdx: 4, title: 'The Great Migration', desc: 'Wildebeest and zebra herds brave rushing river crossings in the timeless annual migration across the Serengeti.' },
+      { num: 2, catalogIdx: 5, title: 'Predators at Dawn: The Cheetah Watch', desc: 'A sleek cheetah prowls silently through sunlit golden grasses with razor-sharp predatory focus.' },
+      { num: 3, catalogIdx: 6, title: 'Midday Sanctuary: The Waterhole Truce', desc: 'A serene gathering of giraffes, zebras, and birds sharing precious water under the scorching afternoon sun.' },
+      { num: 4, catalogIdx: 7, title: 'Night on the Grasslands: Celestial Pride', desc: 'A nocturnal study of a lion pride resting under the glowing star-studded arch of the Milky Way.' },
+      { num: 5, catalogIdx: 10, title: 'Gentle Giants: Savanna Herd Migration', desc: 'An elephant matriarch leads her family across the vast golden plains under ancient baobab trees.' }
     ]
   },
   {
     seriesId: 'ser-2',
     seasonId: 'seas-2',
-    creator: 'usr-3',
-    title: 'ACOUSTIC SPACES',
-    lang: 'te',
-    genre: 'Music',
+    creator: 'usr-2',
+    title: 'THE CREATIVE MIND & CODE',
+    lang: 'en',
+    genre: 'Documentary',
     episodes: [
-      { num: 1, title: 'Echoes of Gachibowli', desc: 'Solo classical guitar recordings matched with ambient morning rainfall under Gachibowli bridges.' },
-      { num: 2, title: 'Synthesizer Sunsets', desc: 'An analog synthesizer live set syncopated with a slow-motion sunset over the hills.' },
-      { num: 3, title: 'The Temple Static', desc: 'Recording historical echoes and wind chimes in ancient stone temple ruins.' },
-      { num: 4, title: 'Grand Hall Reverb', desc: 'A haunting violin performance capturing the raw acoustics of a massive abandoned industrial hall.' },
-      { num: 5, title: 'Library Whispers', desc: 'Soft piano chords layered with the ambient sound of turning pages in a historic reading room.' }
+      { num: 1, catalogIdx: 1, title: 'The Craft of Clean Code', desc: 'Inside the late-night workstation of a software artisan crafting elegant algorithms under warm task lighting.' },
+      { num: 2, catalogIdx: 0, title: 'Tokyo Blue Hour: Shibuya Rain', desc: 'Neon signs shimmering through rainy midnight crosswalks in Shibuya, capturing the quiet pulse of Tokyo.' },
+      { num: 3, catalogIdx: 2, title: 'Digital Canvas: Generative Geometry', desc: 'Algorithmic 3D wireframes and neon light pulses morphing seamlessly in an infinite computational space.' }
     ]
   },
   {
     seriesId: 'ser-3',
     seasonId: 'seas-3',
-    creator: 'usr-2',
-    title: 'THE CREATIVE MIND',
-    lang: 'hi',
-    genre: 'Documentary',
+    creator: 'usr-10',
+    title: 'WILD EXPEDITIONS',
+    lang: 'en',
+    genre: 'Action',
     episodes: [
-      { num: 1, title: 'The Power of Clean Code', desc: 'A senior software architect explains how they approach writing readable software like poetry.' },
-      { num: 2, title: 'Designing for the Future', desc: 'A visual designer breaks down their minimal typography and dark-mode philosophy.' },
-      { num: 3, title: 'The Sound of Code', desc: 'A keyboard builder documents the acoustic and tactile feel of customized mechanical setups.' },
-      { num: 4, title: 'The Art of Refactoring', desc: 'Step-by-step masterclass on taking a messy legacy file and reducing it to clean methods.' },
-      { num: 5, title: 'Minimal Workspace Setup', desc: 'An architect shows how desk placement and lighting can improve programmer focus.' }
+      { num: 1, catalogIdx: 11, title: 'Whitewater Surge: Canyon Rapids', desc: 'A high-stakes river rafting crew battles roaring Category 5 white-water rapids through a steep volcanic gorge.' },
+      { num: 2, catalogIdx: 12, title: 'The Final 100 Meters: Finish Line Glory', desc: 'An endurance runner summons the last burst of willpower to outpace the chasing pack and break the championship ribbon.' },
+      { num: 3, catalogIdx: 8, title: 'Golden Paws: Ocean Beach Fetch', desc: 'A joyful retriever dog dashing along the sunny shore and catching frisbees in pure exhilaration.' }
     ]
   },
   {
     seriesId: 'ser-4',
     seasonId: 'seas-4',
-    creator: 'usr-5',
-    title: 'DIGITAL CANVAS',
+    creator: 'usr-4',
+    title: 'OCEAN & NATURE SANCTUARIES',
     lang: 'en',
-    genre: 'Art',
+    genre: 'Nature',
     episodes: [
-      { num: 1, title: 'Fine Lines', desc: 'Sketching hand-drawn ink designs and morphing them into generative art models.' },
-      { num: 2, title: 'Generative Landscapes', desc: 'Projecting procedural light patterns onto canvas layers in a dark studio setting.' },
-      { num: 3, title: 'Code and Clay', desc: 'Designing physical sculptures using algorithmic parameters and 3D printing.' },
-      { num: 4, title: 'Interactive Light', desc: 'An installation that changes patterns based on the footsteps of viewers walking through a gallery.' }
+      { num: 1, catalogIdx: 9, title: 'Pacific Drifter: The Coral Sanctuary', desc: 'A majestic green sea turtle glides effortlessly through sunlit azure coastal currents and protected coral sanctuaries.' },
+      { num: 2, catalogIdx: 14, title: 'Coastal Solitude: Ocean Shoreline', desc: 'Crystalline turquoise ocean waves rolling continuously over golden beach sands in unhurried, rhythmic beauty.' },
+      { num: 3, catalogIdx: 13, title: 'Skyward Whispers: High Altitude Clouds', desc: 'A hypnotic vertical time-lapse of golden sunset cumulus clouds drifting across high mountain peaks.' }
     ]
   },
   {
     seriesId: 'ser-5',
     seasonId: 'seas-5',
-    creator: 'usr-9',
-    title: 'ECHOES OF THE SEA',
+    creator: 'usr-6',
+    title: 'PLAYFUL PAWS',
     lang: 'en',
-    genre: 'Documentary',
+    genre: 'Comedy',
     episodes: [
-      { num: 1, title: 'Breaking Tides', desc: 'Slow-motion drone capture of ocean waves breaking against dark volcanic shores.' },
-      { num: 2, title: 'Deep Blue Solitude', desc: 'A calming underwater sequence capturing sunlight rays diffusing through deep kelp forests.' },
-      { num: 3, title: 'Coastal Lighthouses', desc: 'Documenting the silent keepers of remote cliffs during high-wind winter nights.' }
-    ]
-  },
-  {
-    seriesId: 'ser-6',
-    seasonId: 'seas-6',
-    creator: 'usr-ai',
-    title: 'SAVANNA SURVIVAL',
-    lang: 'en',
-    genre: 'Animal',
-    episodes: [
-      { num: 1, title: 'The Great Migration', desc: 'A majestic vertical journey tracking wildebeest and zebra herds crossing rushing savanna rivers.', vidId: 'vid-sav-1', epId: 'ep-sav-1', video_url: '/images/savanna_migration.jpg', audio_url: '/audio/lofi.mp3' },
-      { num: 2, title: 'Predators at Dawn', desc: 'Watching cheetahs navigate dry golden grasses in the morning sun.', vidId: 'vid-sav-2', epId: 'ep-sav-2', video_url: '/images/savanna_cheetah.jpg', audio_url: '/audio/lofi2.mp3' },
-      { num: 3, title: 'Waterhole Oasis', desc: 'Documenting a serene gathering of elephants, giraffes, and birds under a scorching sun.', vidId: 'vid-sav-3', epId: 'ep-sav-3', video_url: '/images/savanna_waterhole.jpg', audio_url: '/audio/ambient.mp3' },
-      { num: 4, title: 'Night on the Grasslands', desc: 'A cinematic nighttime study of nocturnal hunters and the starry savanna canopy.', vidId: 'vid-sav-4', epId: 'ep-sav-4', video_url: '/images/savanna_lion_night.jpg', audio_url: '/audio/lofi.mp3' }
+      { num: 1, catalogIdx: 3, title: 'Golden Autumn: Joyful Puppy Paws', desc: 'Two adorable golden retriever puppies romping through a carpet of golden autumn leaves on a sunny afternoon.' },
+      { num: 2, catalogIdx: 8, title: 'Golden Paws: Ocean Beach Fetch', desc: 'A joyful retriever dog dashing along the sunny shore and catching frisbees in pure exhilaration.' }
     ]
   }
 ];
 
 let vidIdCounter = 1;
 seriesConfigs.forEach((cfg) => {
-  cfg.episodes.forEach((ep: any) => {
-    const vidId = ep.vidId || `vid-${vidIdCounter}`;
-    const matched = MATCHED_MEDIA_CATALOG[(vidIdCounter - 1) % MATCHED_MEDIA_CATALOG.length];
-    const url = ep.video_url || matched.video_url;
-    const audioUrl = ep.audio_url || matched.audio_url;
-    const thumbUrl = ep.thumbnail_url || (ep.video_url ? ep.video_url : matched.thumbnail_url);
+  cfg.episodes.forEach((ep) => {
+    const vidId = `vid-ser-${cfg.seriesId.replace('ser-', '')}-ep-${ep.num}`;
+    const matched = MATCHED_MEDIA_CATALOG[ep.catalogIdx];
+    const url = matched.video_url;
+    const audioUrl = matched.audio_url;
+    const thumbUrl = matched.thumbnail_url;
 
     const videoRecord: Video = {
       id: vidId,
       creator_id: cfg.creator,
-      title: `${cfg.title} - S1:E${ep.num} (${ep.title || matched.title})`,
-      description: ep.desc || matched.desc,
+      title: `${cfg.title} - S1:E${ep.num} (${ep.title})`,
+      description: ep.desc,
       video_url: url,
       audio_url: audioUrl,
       thumbnail_url: thumbUrl,
@@ -349,7 +327,7 @@ seriesConfigs.forEach((cfg) => {
       rights_type: 'creator_licensed',
       rights_confirmed: true,
       ai_summary: `AI Analysis: Highly engaging episode of ${cfg.title}. Neural spike analytics indicate peak retention at climax.`,
-      ai_tags: [cfg.genre.toLowerCase(), 'episodic', cfg.lang, 'masterclass', 'original'],
+      ai_tags: [cfg.genre.toLowerCase(), ...matched.tags, 'series', 'episode'],
       view_count: 50000 + vidIdCounter * 12000,
       like_count: 4500 + vidIdCounter * 1500,
       comment_count: 240 + vidIdCounter * 45,
@@ -362,11 +340,11 @@ seriesConfigs.forEach((cfg) => {
     SEED_VIDEOS.push(videoRecord);
 
     SEED_EPISODES.push({
-      id: ep.epId || `ep-${vidIdCounter}`,
+      id: `ep-${cfg.seriesId.replace('ser-', '')}-${ep.num}`,
       season_id: cfg.seasonId,
       video_id: vidId,
       episode_number: ep.num,
-      title: ep.title || matched.title,
+      title: ep.title,
       created_at: videoRecord.created_at
     });
 
@@ -384,7 +362,7 @@ const shortCreators = [
   { id: 'usr-3', catalogIdx: 5, title: 'Cheetah Golden Hour Prowl', desc: 'A silent African cheetah scanning the sunlit dry grasslands with razor-sharp predatory patience.' },
   { id: 'usr-8', catalogIdx: 6, title: 'Waterhole Oasis Peace', desc: 'Wild animals gathering under the midday heat for a peaceful water sanctuary truce.' },
   { id: 'usr-1', catalogIdx: 7, title: 'Starry Savanna Lion Watch', desc: 'The lion pride rests quietly under the glittering arch of the Milky Way galaxy.' },
-  { id: 'usr-5', catalogIdx: 8, title: 'River Grizzly Salmon Hunt', desc: 'A powerful brown bear stands vigilant in foaming river rapids waiting for migrating salmon.' },
+  { id: 'usr-5', catalogIdx: 8, title: 'Golden Paws: Beach Frisbee Dash', desc: 'A joyful retriever dog racing along the sunny shoreline and leaping for frisbees.' },
   { id: 'usr-4', catalogIdx: 9, title: 'Pacific Sea Turtle Coral Drift', desc: 'A green sea turtle glides weightlessly through sunlit azure coastal waters and coral gardens.' },
   { id: 'usr-2', catalogIdx: 10, title: 'Elephant Family Savanna March', desc: 'An elephant matriarch leads her family across the vast golden plains under ancient baobab trees.' },
   { id: 'usr-9', catalogIdx: 11, title: 'Canyon Whitewater Surge', desc: 'An extreme river rafting expedition plunging through thundering Category 5 river rapids.' },
@@ -431,7 +409,7 @@ const viralCreators = [
   { id: 'usr-4', catalogIdx: 0, title: 'Tokyo Rain: Midnight Crosswalks', desc: 'High-framerate study of neon signs reflecting in Shibuya midnight street rain.', views: 3100000, likes: 830000, shares: 250000, comments: 45000 },
   { id: 'usr-7', catalogIdx: 2, title: 'Algorithmic 3D Wireframes', desc: 'Procedural mathematical models animated with glowing neon coordinate meshes.', views: 1800000, likes: 450000, shares: 89000, comments: 18000 },
   { id: 'usr-8', catalogIdx: 3, title: 'Puppy Autumn Celebration', desc: 'Two golden retriever pups tumbling through autumn leaves in pure joyful energy.', views: 2900000, likes: 780000, shares: 190000, comments: 31000 },
-  { id: 'usr-5', catalogIdx: 8, title: 'Alaskan River Grizzly Salmon Watch', desc: 'A wild grizzly bear surveying rapid river waters during the annual salmon run.', views: 4200000, likes: 1100000, shares: 480000, comments: 85000 },
+  { id: 'usr-5', catalogIdx: 8, title: 'Golden Retriever Ocean Beach Run', desc: 'A cheerful dog sprinting through the sea spray and enjoying pure coastal freedom.', views: 4200000, likes: 1100000, shares: 480000, comments: 85000 },
   { id: 'usr-3', catalogIdx: 9, title: 'Pacific Sea Turtle Coral Sanctuary', desc: 'Peaceful underwater journey beside a green sea turtle in tropical waters.', views: 1600000, likes: 320000, shares: 75000, comments: 12000 },
   { id: 'usr-6', catalogIdx: 10, title: 'Gentle Savanna Giants Herd', desc: 'Elephant family traversing the wide open Serengeti landscape at golden hour.', views: 3400000, likes: 910000, shares: 280000, comments: 92000 },
   { id: 'usr-1', catalogIdx: 11, title: 'Category 5 Whitewater Rapids', desc: 'Adrenaline-packed canyon rafting crew conquering turbulent white water cascades.', views: 5100000, likes: 1400000, shares: 680000, comments: 140000 },
@@ -814,11 +792,11 @@ const openDramaSegmentVideos: Video[] = [
   {
     id: 'vid-drama-anim-1',
     creator_id: 'usr-3',
-    title: 'Wild River: Alaskan Grizzly Salmon Run',
-    description: 'A powerful Alaskan grizzly bear stands vigilant amidst churning river rapids, waiting patiently for leaping salmon in the prime migration.',
+    title: 'Golden Paws: Ocean Beach Fetch',
+    description: 'A joyful golden retriever dashes along the sunny shoreline in high spirits, chasing frisbees and leaping through sea spray.',
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/dog.mp4',
     audio_url: '/audio/lofi2.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=400&h=250&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
     language: 'en',
     genre: 'Animals',
@@ -827,8 +805,8 @@ const openDramaSegmentVideos: Video[] = [
     status: 'published',
     rights_type: 'creator_licensed',
     rights_confirmed: true,
-    ai_summary: 'Suspenseful wildlife tracking of a grizzly bear hunting leaping salmon in rushing rapids.',
-    ai_tags: ['animals', 'wildlife', 'grizzly', 'alaska', 'river', 'survival'],
+    ai_summary: 'Heartwarming, joyful pet cinematography of a playful retriever at the beach.',
+    ai_tags: ['animals', 'dog', 'golden', 'beach', 'fetch', 'playful'],
     view_count: 610000,
     like_count: 178000,
     comment_count: 13500,
@@ -911,7 +889,7 @@ const SEED_AI_ANALYSIS: AIAnalysis[] = SEED_VIDEOS.slice(0, 5).map((v, i) => ({
 }));
 
 export const initializeLocalDb = () => {
-  const needsInit = !localStorage.getItem(DB_PREFIX + 'initialized_v27') || 
+  const needsInit = !localStorage.getItem(DB_PREFIX + 'initialized_v31') || 
                     !localStorage.getItem(DB_PREFIX + 'videos') || 
                     JSON.parse(localStorage.getItem(DB_PREFIX + 'videos') || '[]').length === 0;
 
@@ -936,7 +914,7 @@ export const initializeLocalDb = () => {
     setStorageItem('ai_analysis', SEED_AI_ANALYSIS);
     setStorageItem('content_events', []);
     setStorageItem('currentUser', SEED_PROFILES[0]); // Logged in as Alex Rivera by default for immediate preview
-    localStorage.setItem(DB_PREFIX + 'initialized_v27', 'true');
+    localStorage.setItem(DB_PREFIX + 'initialized_v31', 'true');
   }
 };
 

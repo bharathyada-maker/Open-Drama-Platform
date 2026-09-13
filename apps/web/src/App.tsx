@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { dbClient } from './lib/dbClient';
+import { initializeLocalDb } from './lib/localDb';
 import { Video } from './types/schema';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
@@ -42,6 +43,11 @@ function AppContent() {
   const [followingVideos, setFollowingVideos] = useState<Video[]>([]);
   const [loadingFollowing, setLoadingFollowing] = useState(false);
 
+  // Guarantee clean local database initialization on app mount
+  useEffect(() => {
+    initializeLocalDb();
+  }, []);
+
   // Fetch following videos when on Following tab
   useEffect(() => {
     if (currentTab === 'following' && user) {
@@ -82,18 +88,30 @@ function AppContent() {
 
   const handleVideoSelect = (videoId: string, playlistIds: string[] = []) => {
     setActivePlayId(videoId);
-    // If playlist is empty, load single video
-    if (playlistIds.length === 0) {
-      setPlaylistVideoIds([videoId]);
-    } else {
-      setPlaylistVideoIds(playlistIds);
-    }
-    
-    // Resolve full video objects for play feed
-    dbClient.getVideos().then(v => {
-      const ids = playlistIds.length > 0 ? playlistIds : [videoId];
-      const items = ids.map(id => v.find(item => item.id === id)).filter(Boolean) as Video[];
-      setPlaylistVideos(items);
+    dbClient.getVideos().then(allVideos => {
+      const published = allVideos.filter(v => v.status === 'published');
+      let feedList: Video[] = [];
+
+      if (playlistIds && playlistIds.length > 1) {
+        // Multi-item playlist specified (e.g., from series episodes)
+        feedList = playlistIds
+          .map(id => published.find(item => item.id === id))
+          .filter(Boolean) as Video[];
+      }
+
+      // If playlist is empty or has only 1 item, expand to all published videos with clicked video prioritized first
+      if (feedList.length <= 1) {
+        const selected = published.find(v => v.id === videoId);
+        if (selected) {
+          const others = published.filter(v => v.id !== videoId);
+          feedList = [selected, ...others];
+        } else {
+          feedList = published;
+        }
+      }
+
+      setPlaylistVideoIds(feedList.map(v => v.id));
+      setPlaylistVideos(feedList);
       setTab('play_feed');
     });
   };
@@ -228,6 +246,7 @@ function AppContent() {
           <div className="h-[calc(100vh-120px)] md:h-[calc(100vh-64px)] w-full">
             <VerticalFeed
               videos={playlistVideos}
+              initialVideoId={activePlayId}
               onCommentsClick={setActiveCommentsVideoId}
               onCreatorClick={handleCreatorSelect}
             />
