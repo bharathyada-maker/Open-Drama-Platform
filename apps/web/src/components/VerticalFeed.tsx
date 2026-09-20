@@ -23,7 +23,7 @@ export const VerticalFeed: React.FC<VerticalFeedProps> = ({
   };
 
   const [activeIndex, setActiveIndex] = useState(getInitialIndex);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Sync index when initialVideoId or videos list updates

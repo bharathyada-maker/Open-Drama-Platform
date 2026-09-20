@@ -4,6 +4,8 @@ import { dbClient } from '../lib/dbClient';
 import { Video, Profile, CreatorProfile } from '../types/schema';
 import { Heart, MessageCircle, Bookmark, Share2, AlertTriangle, Play, Volume2, VolumeX, Loader2, Plus, Check, Eye, EyeOff, ChevronDown } from 'lucide-react';
 
+import { mediaStorage } from '../lib/mediaStorage';
+
 interface VerticalPlayerProps {
   video: Video;
   isActive: boolean;
@@ -21,7 +23,7 @@ interface SubtitleData {
 
 const resolveMediaUrl = (url?: string): string => {
   if (!url) return '';
-  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) return url;
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) return url;
   const base = import.meta.env.BASE_URL || '/';
   const clean = url.startsWith('/') ? url.slice(1) : url;
   return `${base}${clean}`;
@@ -85,7 +87,7 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
   const audioRef = useRef<HTMLAudioElement>(null);
   const lastLoadedAudioSrcRef = useRef<string>('');
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isCinematic, setIsCinematic] = useState(false);
+  const [isCinematic, setIsCinematic] = useState(true);
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [following, setFollowing] = useState(false);
@@ -95,6 +97,19 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
   const [loading, setLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [resolvedVideoUrl, setResolvedVideoUrl] = useState<string>(resolveMediaUrl(video.video_url));
+
+  useEffect(() => {
+    let active = true;
+    const checkMedia = async () => {
+      const url = await mediaStorage.resolveVideoPlaybackUrl(video.id, video.video_url);
+      if (active) {
+        setResolvedVideoUrl(resolveMediaUrl(url));
+      }
+    };
+    checkMedia();
+    return () => { active = false; };
+  }, [video.id, video.video_url]);
   
   // Double-tap animate state
   const [showHeartAnimate, setShowHeartAnimate] = useState(false);
@@ -477,7 +492,7 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
       ) : (
         <video
           ref={videoRef}
-          src={resolveMediaUrl(video.video_url)}
+          src={resolvedVideoUrl}
           loop
           playsInline
           muted={isMuted || !!video.audio_url}
@@ -517,9 +532,9 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
           <button
             onClick={(e) => { e.stopPropagation(); setIsCinematic(!isCinematic); }}
             className="p-2.5 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/5 shadow-md transition-all hover:scale-105 active:scale-95"
-            title={isCinematic ? "Show Controls" : "Cinematic Mode"}
+            title={isCinematic ? "Show Information" : "Hide Information (Cinematic)"}
           >
-            {isCinematic ? <Eye className="w-4 h-4 text-accent-rose animate-pulse" /> : <EyeOff className="w-4 h-4" />}
+            {isCinematic ? <EyeOff className="w-4 h-4 text-accent-rose" /> : <Eye className="w-4 h-4" />}
           </button>
           {/* Volume Button */}
           <button

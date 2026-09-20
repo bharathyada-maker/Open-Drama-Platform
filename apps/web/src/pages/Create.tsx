@@ -1,8 +1,114 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { dbClient } from '../lib/dbClient';
+import { mediaStorage } from '../lib/mediaStorage';
 import { Video, Series, Season, CreatorProfile } from '../types/schema';
-import { Play, BarChart2, Video as VideoIcon, Film, AlertCircle, Plus, Check, Trash2, ArrowRight, ShieldCheck, RefreshCw, UploadCloud, Sparkles } from 'lucide-react';
+import { 
+  Play, BarChart2, Video as VideoIcon, Film, AlertCircle, Plus, Check, 
+  Trash2, ArrowRight, ShieldCheck, RefreshCw, UploadCloud, Sparkles,
+  Music, Volume2, VolumeX, FileVideo, CheckCircle2, Pause
+} from 'lucide-react';
+
+export const AUDIO_TRACKS = [
+  { url: '', label: '🔇 Original Video Sound (No Soundtrack Overlay)', genre: 'Original' },
+  { url: '/audio/lofi.mp3', label: '☕ Track 1: Lo-Fi Study Chill (Relaxed Rhodes & Vinyl)', genre: 'Lo-Fi' },
+  { url: '/audio/ambient.mp3', label: '🌊 Track 2: Ambient Horizon (Ethereal Pads & Ocean Waves)', genre: 'Ambient' },
+  { url: '/audio/lofi2.mp3', label: '🌙 Track 3: Lo-Fi Midnight (Deep Bass & Mellow Keys)', genre: 'Lo-Fi' },
+  { url: '/audio/track4_playful.mp3', label: '🐾 Track 4: Playful Antics (Bouncy Strings & Pizzicato)', genre: 'Playful' },
+  { url: '/audio/track5_action.mp3', label: '⚡ Track 5: Cinematic Action Pulse (High-Stakes Drums)', genre: 'Action' },
+  { url: '/audio/track6_tranquil.mp3', label: '✨ Track 6: Tranquil Solitude (Gentle Piano & Reverberance)', genre: 'Tranquil' },
+  { url: '/audio/track7_savanna.mp3', label: '🦁 Track 7: Savanna Horizon (Tribal Percussion & Warm Winds)', genre: 'Savanna' },
+  { url: '/audio/track8_upbeat.mp3', label: '🎉 Track 8: Upbeat Energy (Dynamic Indie Groove)', genre: 'Upbeat' },
+];
+
+export const PRESET_VIDEOS = [
+  {
+    title: 'Tokyo Midnight: Shibuya Rain',
+    genre: 'Documentary',
+    url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/docs/walking.mp4',
+    thumbnail: '/images/shibuya_rain_night.jpg',
+    audio: '/audio/track6_tranquil.mp3'
+  },
+  {
+    title: 'Coastal Solitude: Ocean Tides',
+    genre: 'Nature',
+    url: '/coverr-test.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&h=250&q=80',
+    audio: '/audio/ambient.mp3'
+  },
+  {
+    title: 'Skyward Whispers: High Altitude Clouds',
+    genre: 'Devotional',
+    url: '/videos/cloudy-sky.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=400&h=250&q=80',
+    audio: '/audio/track6_tranquil.mp3'
+  },
+  {
+    title: 'Whitewater Surge: Canyon Rapids',
+    genre: 'Action',
+    url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/rafting.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=400&h=250&q=80',
+    audio: '/audio/track5_action.mp3'
+  },
+  {
+    title: 'Golden Paws: Ocean Beach Fetch',
+    genre: 'Animals',
+    url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/dog.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&h=250&q=80',
+    audio: '/audio/track4_playful.mp3'
+  },
+  {
+    title: 'Pacific Drifter: Coral Reef Sanctuary',
+    genre: 'Nature',
+    url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/sea_turtle.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&h=250&q=80',
+    audio: '/audio/track6_tranquil.mp3'
+  }
+];
+
+const extractThumbnail = (fileOrUrl: File | string): Promise<{ thumbnailUrl: string; duration: number }> => {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.muted = true;
+    video.playsInline = true;
+    const src = typeof fileOrUrl === 'string' ? fileOrUrl : URL.createObjectURL(fileOrUrl);
+    video.src = src;
+
+    video.onloadedmetadata = () => {
+      const targetTime = Math.min(1.0, (video.duration || 2) / 2);
+      video.currentTime = targetTime;
+    };
+
+    video.onseeked = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 360;
+        canvas.height = 640;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const thumb = canvas.toDataURL('image/jpeg', 0.85);
+          resolve({ thumbnailUrl: thumb, duration: Math.round(video.duration) || 30 });
+          return;
+        }
+      } catch (e) {
+        console.warn('Canvas export failed:', e);
+      }
+      resolve({
+        thumbnailUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80',
+        duration: Math.round(video.duration) || 30
+      });
+    };
+
+    video.onerror = () => {
+      resolve({
+        thumbnailUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80',
+        duration: 30
+      });
+    };
+  });
+};
 
 export const Create: React.FC = () => {
   const { user, creatorProfile, becomeCreator } = useAuth();
@@ -14,7 +120,9 @@ export const Create: React.FC = () => {
 
   // Upload Video Wizard States
   const [uploadStep, setUploadStep] = useState(1);
-  const [videoUrl, setVideoUrl] = useState('https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-light-in-a-rainy-night-42211-large.mp4');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fileDetails, setFileDetails] = useState<{ name: string; size: string } | null>(null);
+  const [videoUrl, setVideoUrl] = useState('https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/docs/walking.mp4');
   const [videoTitle, setVideoTitle] = useState('');
   const [videoDesc, setVideoDesc] = useState('');
   const [videoType, setVideoType] = useState('short');
@@ -22,8 +130,17 @@ export const Create: React.FC = () => {
   const [videoGenre, setVideoGenre] = useState('Drama');
   const [videoTags, setVideoTags] = useState('');
   const [videoThumbnail, setVideoThumbnail] = useState('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80');
+  const [isAutoThumb, setIsAutoThumb] = useState(false);
+  const [videoDuration, setVideoDuration] = useState(30);
+  const [videoAudioUrl, setVideoAudioUrl] = useState('/audio/track8_upbeat.mp3');
+  const [audioPreviewPlaying, setAudioPreviewPlaying] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isExtractingThumb, setIsExtractingThumb] = useState(false);
   const [rightsConfirmed, setRightsConfirmed] = useState(false);
   const [publishStatus, setPublishStatus] = useState<'draft' | 'published'>('published');
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const audioPreviewRef = useRef<HTMLAudioElement>(null);
   
   // Video Series association
   const [assocSeriesId, setAssocSeriesId] = useState('');
@@ -85,12 +202,12 @@ export const Create: React.FC = () => {
       });
 
       setAnalytics({
-        views: totalViews || 4200, // Seeding reasonable analytics fallback values for visuals
+        views: totalViews || 4200,
         likes: totalLikes || 650,
         comments: totalComments || 35,
         shares: totalShares || 90,
-        watchTimeMin: Math.round((totalViews * 45) / 60) || 3150, // 45 seconds average watch duration
-        completionRate: mineV.length > 0 ? 68 : 0 // 68% average watch completion rate
+        watchTimeMin: Math.round((totalViews * 45) / 60) || 3150,
+        completionRate: mineV.length > 0 ? 68 : 0
       });
 
     } catch (e) {
@@ -105,6 +222,84 @@ export const Create: React.FC = () => {
       loadCreatorLists();
     }
   }, [creatorProfile, user]);
+
+  const processVideoFile = async (file: File) => {
+    if (!file.type.startsWith('video/')) {
+      alert('Please select a valid video file (MP4, WebM, QuickTime, etc.).');
+      return;
+    }
+
+    const sizeInMb = (file.size / (1024 * 1024)).toFixed(1);
+    setSelectedFile(file);
+    setFileDetails({ name: file.name, size: `${sizeInMb} MB` });
+
+    const objUrl = URL.createObjectURL(file);
+    setVideoUrl(objUrl);
+
+    // Auto-generate title from filename if title empty
+    const cleanTitle = file.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ');
+    if (!videoTitle) {
+      setVideoTitle(cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1));
+    }
+
+    setIsExtractingThumb(true);
+    try {
+      const { thumbnailUrl, duration } = await extractThumbnail(file);
+      setVideoThumbnail(thumbnailUrl);
+      setIsAutoThumb(true);
+      setVideoDuration(duration);
+    } catch (e) {
+      console.warn('Error extracting thumbnail:', e);
+    } finally {
+      setIsExtractingThumb(false);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processVideoFile(file);
+    }
+  };
+
+  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      processVideoFile(file);
+    }
+  };
+
+  const handleSelectPreset = (preset: typeof PRESET_VIDEOS[0]) => {
+    setSelectedFile(null);
+    setFileDetails(null);
+    setVideoUrl(preset.url);
+    setVideoThumbnail(preset.thumbnail);
+    setIsAutoThumb(false);
+    setVideoAudioUrl(preset.audio);
+    setVideoGenre(preset.genre);
+    if (!videoTitle) {
+      setVideoTitle(preset.title);
+    }
+  };
+
+  const toggleAudioPreview = (trackUrl: string) => {
+    if (!audioPreviewRef.current) return;
+    if (audioPreviewPlaying) {
+      audioPreviewRef.current.pause();
+      setAudioPreviewPlaying(false);
+    } else {
+      if (trackUrl) {
+        audioPreviewRef.current.src = trackUrl;
+        audioPreviewRef.current.play().then(() => {
+          setAudioPreviewPlaying(true);
+        }).catch(err => {
+          console.warn('Audio play failed:', err);
+        });
+      }
+    }
+  };
 
   const handleCreateCreatorProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,7 +319,6 @@ export const Create: React.FC = () => {
     if (!videoTitle) return alert('Please enter a video title first to assist the AI model.');
     setAiGenerating(true);
     setTimeout(() => {
-      // Simulate Gemini JSON structure output
       const mockAiOutput = {
         title: `Cinematic: ${videoTitle}`,
         description: `${videoDesc || 'A short vertical story.'}\n\nEnriched by Gemini: Visual edits capturing emotional highs, focusing on deep lighting and thematic sound design.`,
@@ -148,17 +342,24 @@ export const Create: React.FC = () => {
     if (!rightsConfirmed) return alert('You must confirm content rights to upload.');
 
     try {
+      // Pause audio preview if playing
+      if (audioPreviewRef.current) {
+        audioPreviewRef.current.pause();
+        setAudioPreviewPlaying(false);
+      }
+
       // Create Video Record
       const newVideo = await dbClient.createVideo({
         creator_id: user.id,
         title: videoTitle,
         description: videoDesc,
         video_url: videoUrl,
+        audio_url: videoAudioUrl || undefined,
         thumbnail_url: videoThumbnail,
         content_type: videoType,
         language: videoLang,
         genre: videoGenre,
-        duration_seconds: videoType === 'short' ? 30 : 180,
+        duration_seconds: videoDuration || (videoType === 'short' ? 30 : 180),
         visibility: 'public',
         status: publishStatus,
         rights_type: 'creator_licensed',
@@ -168,13 +369,16 @@ export const Create: React.FC = () => {
         published_at: publishStatus === 'published' ? new Date().toISOString() : null
       });
 
+      // If user uploaded a physical file from device, persist blob to IndexedDB
+      if (selectedFile) {
+        await mediaStorage.saveMediaBlob(newVideo.id, selectedFile);
+      }
+
       // Series ep attachment
       if (videoType === 'episode' && assocSeriesId) {
-        // Fetch seasons for series
         const seasons = await dbClient.getSeasons(assocSeriesId);
         let seasonId = assocSeasonId;
         if (seasons.length === 0) {
-          // Auto create season 1 if missing
           const s1 = await dbClient.addSeason(assocSeriesId, 1, 'Season 1', 'First Season');
           seasonId = s1.id;
         } else if (!seasonId) {
@@ -186,6 +390,8 @@ export const Create: React.FC = () => {
       alert('Video successfully published!');
       
       // Reset form & reload lists
+      setSelectedFile(null);
+      setFileDetails(null);
       setVideoTitle('');
       setVideoDesc('');
       setUploadStep(1);
@@ -479,58 +685,139 @@ export const Create: React.FC = () => {
         <div className="max-w-2xl mx-auto bg-bg-surface border border-border-dark rounded-3xl p-6 shadow-xl animate-fade-in">
           {/* Upload Wizard Header Tracker */}
           <div className="flex items-center justify-between border-b border-border-dark pb-4 mb-6">
-            <h3 className="font-bold text-white text-md">Publish New Video</h3>
-            <span className="text-xs text-text-muted">Step {uploadStep} of 4</span>
+            <div>
+              <h3 className="font-bold text-white text-md">Publish New Video</h3>
+              <p className="text-[10px] text-text-secondary">Upload your own videos, select audio scores, and publish to the OpenDrama network.</p>
+            </div>
+            <span className="text-xs text-text-muted font-bold px-2.5 py-1 rounded-full bg-bg-card border border-border-dark">
+              Step {uploadStep} of 4
+            </span>
           </div>
+
+          {/* Hidden audio element for previewing background scores */}
+          <audio ref={audioPreviewRef} loop onEnded={() => setAudioPreviewPlaying(false)} />
 
           <form onSubmit={handleVideoUploadSubmit} className="space-y-6">
             {uploadStep === 1 && (
               /* Step 1: Video File Selection */
-              <div className="space-y-4 text-center">
-                <div className="border-2 border-dashed border-border-dark rounded-2xl py-12 px-6 bg-bg-card/30 flex flex-col items-center gap-3">
-                  <div className="p-4 rounded-full bg-accent-rose/10 text-accent-rose">
+              <div className="space-y-5">
+                {/* Hidden real file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="video/mp4,video/webm,video/ogg,video/quicktime"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+
+                {/* Drag and Drop Zone */}
+                <div
+                  onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                  onDragLeave={() => setIsDragging(false)}
+                  onDrop={handleFileDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`border-2 border-dashed rounded-3xl py-10 px-6 text-center cursor-pointer transition-all ${
+                    isDragging
+                      ? 'border-accent-rose bg-accent-rose/10 scale-[1.01]'
+                      : 'border-border-dark bg-bg-card/40 hover:border-accent-rose/60 hover:bg-bg-card/60'
+                  }`}
+                >
+                  <div className="w-16 h-16 rounded-2xl bg-accent-rose/10 text-accent-rose flex items-center justify-center mx-auto mb-3 shadow-inner">
                     <UploadCloud className="w-8 h-8 animate-bounce" />
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-white">Select Video File</p>
-                    <p className="text-[10px] text-text-muted mt-0.5">MP4 formats supported. Vertical aspect ratios recommended.</p>
-                  </div>
+                  <p className="text-sm font-bold text-white mb-1">
+                    {selectedFile ? 'Change Selected Video File' : 'Choose Video from Your Device'}
+                  </p>
+                  <p className="text-xs text-text-secondary mb-3">
+                    Drag & drop MP4, WebM, or QuickTime files here, or click to browse
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent-rose text-white text-xs font-bold shadow-md shadow-accent-rose/20">
+                    <FileVideo className="w-4 h-4" />
+                    Browse Device / Computer
+                  </span>
                 </div>
 
-                <div className="text-left">
-                  <label className="block text-xs font-bold text-text-secondary uppercase mb-2">Simulated Source URL</label>
-                  <input
-                    type="text"
-                    value={videoUrl}
-                    onChange={(e) => setVideoUrl(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-bg-card border border-border-dark text-xs text-white focus:outline-none focus:border-accent-rose"
-                    placeholder="Enter raw video mp4 url"
-                    required
-                  />
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      type="button"
-                      onClick={() => setVideoUrl('https://assets.mixkit.co/videos/preview/mixkit-waves-breaking-on-the-shore-from-above-1416-large.mp4')}
-                      className="px-2 py-1 rounded bg-bg-card text-[9px] text-text-secondary hover:text-white border border-border-dark"
-                    >
-                      Preset: Ocean Vertical
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setVideoUrl('https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4')}
-                      className="px-2 py-1 rounded bg-bg-card text-[9px] text-text-secondary hover:text-white border border-border-dark"
-                    >
-                      Preset: Forest Horizontal
-                    </button>
+                {/* Live Video Preview if available */}
+                {videoUrl && (
+                  <div className="bg-bg-card border border-border-dark rounded-2xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                        <span className="text-xs font-bold text-white">Live Video Player Preview</span>
+                      </div>
+                      {fileDetails ? (
+                        <span className="text-[10px] text-text-muted font-mono bg-bg-surface px-2.5 py-1 rounded-lg border border-border-dark">
+                          {fileDetails.name} ({fileDetails.size})
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-accent-rose font-mono bg-bg-surface px-2 py-0.5 rounded-lg border border-border-dark">
+                          Preset / URL Video
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="relative aspect-[9/16] max-h-72 mx-auto rounded-xl overflow-hidden bg-black flex items-center justify-center border border-white/10 shadow-lg">
+                      <video
+                        src={videoUrl}
+                        controls
+                        playsInline
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Presets and URL Fallback */}
+                <div className="pt-2 border-t border-border-dark/60">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-[11px] font-bold text-text-secondary uppercase">
+                      Or Choose from Verified CC0 Video Presets
+                    </label>
+                    <span className="text-[10px] text-text-muted">Royalty-Free HD</span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {PRESET_VIDEOS.map((preset) => (
+                      <button
+                        key={preset.title}
+                        type="button"
+                        onClick={() => handleSelectPreset(preset)}
+                        className={`p-2 rounded-xl text-left border text-xs transition-all flex flex-col justify-between ${
+                          videoUrl === preset.url
+                            ? 'bg-accent-rose/15 border-accent-rose text-white'
+                            : 'bg-bg-card border-border-dark text-text-secondary hover:text-white hover:bg-bg-card/80'
+                        }`}
+                      >
+                        <span className="font-bold text-[11px] line-clamp-1">{preset.title}</span>
+                        <span className="text-[9px] text-text-muted mt-1">{preset.genre}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="mt-3">
+                    <label className="block text-[10px] font-bold text-text-muted uppercase mb-1">
+                      Or Enter Raw Video URL
+                    </label>
+                    <input
+                      type="text"
+                      value={videoUrl}
+                      onChange={(e) => {
+                        setVideoUrl(e.target.value);
+                        setSelectedFile(null);
+                        setFileDetails(null);
+                      }}
+                      className="w-full px-3 py-2 rounded-xl bg-bg-card border border-border-dark text-xs text-white focus:outline-none focus:border-accent-rose"
+                      placeholder="https://...mp4"
+                    />
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setUploadStep(2)}
-                  className="w-full py-3 bg-gradient-to-r from-accent-rose to-accent-purple text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1"
+                  disabled={!videoUrl}
+                  className="w-full py-3.5 bg-gradient-to-r from-accent-rose to-accent-purple text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1 shadow-lg shadow-accent-rose/20 disabled:opacity-50 transition-all hover:opacity-95"
                 >
-                  <span>Continue</span>
+                  <span>Continue to Details & Soundtrack</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -564,7 +851,7 @@ export const Create: React.FC = () => {
                     type="text"
                     value={videoTitle}
                     onChange={(e) => setVideoTitle(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-bg-card border border-border-dark text-xs text-white"
+                    className="w-full px-4 py-2.5 rounded-xl bg-bg-card border border-border-dark text-xs text-white focus:outline-none focus:border-accent-rose"
                     placeholder="E.g. The Call"
                     required
                   />
@@ -576,9 +863,59 @@ export const Create: React.FC = () => {
                     value={videoDesc}
                     onChange={(e) => setVideoDesc(e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-2.5 rounded-xl bg-bg-card border border-border-dark text-xs text-white resize-none"
+                    className="w-full px-4 py-2.5 rounded-xl bg-bg-card border border-border-dark text-xs text-white resize-none focus:outline-none focus:border-accent-rose"
                     placeholder="Provide a short synopsis..."
                   />
+                </div>
+
+                {/* AUDIO SOUNDTRACK SELECTOR */}
+                <div className="p-4 rounded-2xl bg-bg-card/80 border border-border-dark space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Music className="w-4 h-4 text-accent-rose" />
+                      <label className="text-xs font-bold uppercase tracking-wide text-white">Audio Background Score</label>
+                    </div>
+                    {videoAudioUrl && (
+                      <button
+                        type="button"
+                        onClick={() => toggleAudioPreview(videoAudioUrl)}
+                        className={`px-3 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-all ${
+                          audioPreviewPlaying
+                            ? 'bg-accent-rose text-white animate-pulse'
+                            : 'bg-bg-surface border border-border-dark text-text-secondary hover:text-white'
+                        }`}
+                      >
+                        {audioPreviewPlaying ? <Volume2 className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                        <span>{audioPreviewPlaying ? 'Playing Audio' : 'Preview Track'}</span>
+                      </button>
+                    )}
+                  </div>
+
+                  <select
+                    value={videoAudioUrl}
+                    onChange={(e) => {
+                      setVideoAudioUrl(e.target.value);
+                      if (audioPreviewPlaying) {
+                        if (e.target.value) {
+                          if (audioPreviewRef.current) {
+                            audioPreviewRef.current.src = e.target.value;
+                            audioPreviewRef.current.play();
+                          }
+                        } else {
+                          audioPreviewRef.current?.pause();
+                          setAudioPreviewPlaying(false);
+                        }
+                      }
+                    }}
+                    className="w-full px-3 py-2.5 rounded-xl bg-bg-surface border border-border-dark text-xs text-white focus:outline-none focus:border-accent-rose"
+                  >
+                    {AUDIO_TRACKS.map(t => (
+                      <option key={t.url} value={t.url}>{t.label}</option>
+                    ))}
+                  </select>
+                  <p className="text-[10px] text-text-muted">
+                    Curated copyright-safe tracks synchronized to loop perfectly with your video playback.
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -672,16 +1009,16 @@ export const Create: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setUploadStep(1)}
-                    className="flex-1 py-3 bg-bg-card border border-border-dark text-xs text-text-secondary rounded-xl"
+                    className="flex-1 py-3 bg-bg-card border border-border-dark text-xs text-text-secondary rounded-xl hover:text-white transition-colors"
                   >
                     Back
                   </button>
                   <button
                     type="button"
                     onClick={() => setUploadStep(3)}
-                    className="flex-1 py-3 bg-gradient-to-r from-accent-rose to-accent-purple text-white text-xs font-semibold rounded-xl"
+                    className="flex-1 py-3 bg-gradient-to-r from-accent-rose to-accent-purple text-white text-xs font-semibold rounded-xl hover:opacity-95 transition-opacity"
                   >
-                    Continue
+                    Continue to Thumbnail & Rights
                   </button>
                 </div>
               </div>
@@ -691,31 +1028,76 @@ export const Create: React.FC = () => {
               /* Step 3: Thumbnail & Rights */
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wide text-text-secondary mb-2">Select Cover Thumbnail</label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs font-bold uppercase tracking-wide text-text-secondary">
+                      Cover Thumbnail
+                    </label>
+                    {isAutoThumb && (
+                      <span className="text-[10px] text-green-400 font-bold bg-green-500/10 px-2 py-0.5 rounded-full border border-green-500/20 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" /> Auto-Extracted from Video Frame
+                      </span>
+                    )}
+                    {isExtractingThumb && (
+                      <span className="text-[10px] text-accent-rose font-bold animate-pulse">
+                        Extracting frame...
+                      </span>
+                    )}
+                  </div>
+
                   <div className="flex gap-4 items-start">
-                    <img src={videoThumbnail} alt="" className="w-28 h-20 object-cover rounded-xl border border-border-dark bg-bg-card" />
+                    <img
+                      src={videoThumbnail}
+                      alt="Thumbnail preview"
+                      className="w-28 h-36 object-cover rounded-xl border border-border-dark bg-bg-card shadow"
+                    />
                     <div className="flex-1 space-y-2">
                       <input
                         type="text"
                         value={videoThumbnail}
-                        onChange={(e) => setVideoThumbnail(e.target.value)}
+                        onChange={(e) => {
+                          setVideoThumbnail(e.target.value);
+                          setIsAutoThumb(false);
+                        }}
                         className="w-full px-3 py-2 rounded-xl bg-bg-card border border-border-dark text-xs text-white"
                         placeholder="Image URL"
                       />
-                      <button
-                        type="button"
-                        onClick={() => setVideoThumbnail(`https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 5000000)}?auto=format&fit=crop&w=400&h=250&q=80`)}
-                        className="px-3 py-1.5 rounded-lg bg-bg-card border border-border-dark text-[10px] text-text-secondary hover:text-white"
-                      >
-                        Randomize Cover
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setVideoThumbnail(`https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 5000000)}?auto=format&fit=crop&w=400&h=250&q=80`);
+                            setIsAutoThumb(false);
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-bg-card border border-border-dark text-[10px] text-text-secondary hover:text-white transition-colors"
+                        >
+                          Randomize Cover
+                        </button>
+                        {selectedFile && (
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              setIsExtractingThumb(true);
+                              const { thumbnailUrl } = await extractThumbnail(selectedFile);
+                              setVideoThumbnail(thumbnailUrl);
+                              setIsAutoThumb(true);
+                              setIsExtractingThumb(false);
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-bg-card border border-border-dark text-[10px] text-accent-rose hover:text-white transition-colors"
+                          >
+                            Re-Extract Frame
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Rights declaration checkbox */}
                 <div className="p-4 rounded-2xl bg-bg-card/45 border border-border-dark/60 mt-4 space-y-3">
-                  <p className="text-xs font-bold text-white">Rights Confirmation</p>
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-green-400" />
+                    <p className="text-xs font-bold text-white">Content Rights & Copyright Declaration</p>
+                  </div>
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input
                       type="checkbox"
@@ -724,7 +1106,7 @@ export const Create: React.FC = () => {
                       className="mt-1 accent-accent-rose h-4 w-4 bg-bg-surface border-border-dark rounded"
                     />
                     <span className="text-[11px] text-text-secondary leading-relaxed">
-                      I confirm that I own this content or have explicit written authorization from the copyright holder to distribute it on OpenDrama.
+                      I confirm that I own this content or have explicit written authorization from the copyright holder to distribute it on OpenDrama. This content follows community safety guidelines and copyright norms.
                     </span>
                   </label>
                 </div>
@@ -733,16 +1115,17 @@ export const Create: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setUploadStep(2)}
-                    className="flex-1 py-3 bg-bg-card border border-border-dark text-xs text-text-secondary rounded-xl"
+                    className="flex-1 py-3 bg-bg-card border border-border-dark text-xs text-text-secondary rounded-xl hover:text-white"
                   >
                     Back
                   </button>
                   <button
                     type="button"
                     onClick={() => setUploadStep(4)}
-                    className="flex-1 py-3 bg-gradient-to-r from-accent-rose to-accent-purple text-white text-xs font-semibold rounded-xl"
+                    disabled={!rightsConfirmed}
+                    className="flex-1 py-3 bg-gradient-to-r from-accent-rose to-accent-purple text-white text-xs font-semibold rounded-xl disabled:opacity-50"
                   >
-                    Continue
+                    Continue to Publish
                   </button>
                 </div>
               </div>
@@ -752,13 +1135,35 @@ export const Create: React.FC = () => {
               /* Step 4: Publish Status & Finalize */
               <div className="space-y-4">
                 <div className="p-4 rounded-2xl bg-bg-card border border-border-dark text-center">
-                  <Check className="w-8 h-8 text-green-400 mx-auto mb-3 animate-ping" />
-                  <p className="text-sm font-bold text-white">All Set!</p>
-                  <p className="text-[11px] text-text-muted mt-1">Specify your final visibility settings below to publish.</p>
+                  <Check className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                  <p className="text-sm font-bold text-white">Ready to Publish!</p>
+                  <p className="text-[11px] text-text-muted mt-0.5">Review your video details and finalize visibility.</p>
+                </div>
+
+                {/* Summary Card */}
+                <div className="bg-bg-card/60 border border-border-dark rounded-2xl p-4 space-y-2 text-xs">
+                  <div className="flex justify-between border-b border-border-dark/60 pb-2">
+                    <span className="text-text-muted">Title:</span>
+                    <span className="font-bold text-white text-right">{videoTitle}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-border-dark/60 pb-2">
+                    <span className="text-text-muted">Format & Genre:</span>
+                    <span className="text-white capitalize">{videoType} • {videoGenre}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-border-dark/60 pb-2">
+                    <span className="text-text-muted">Soundtrack:</span>
+                    <span className="text-accent-rose font-medium">
+                      {AUDIO_TRACKS.find(t => t.url === videoAudioUrl)?.genre || 'None'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-text-muted">Duration:</span>
+                    <span className="text-white">{videoDuration}s</span>
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wide text-text-secondary mb-1">Status</label>
+                  <label className="block text-xs font-bold uppercase tracking-wide text-text-secondary mb-2">Visibility Status</label>
                   <div className="flex gap-3">
                     <button
                       type="button"
@@ -789,15 +1194,15 @@ export const Create: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setUploadStep(3)}
-                    className="flex-1 py-3 bg-bg-card border border-border-dark text-xs text-text-secondary rounded-xl"
+                    className="flex-1 py-3 bg-bg-card border border-border-dark text-xs text-text-secondary rounded-xl hover:text-white"
                   >
                     Back
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-3 bg-gradient-to-r from-accent-rose to-accent-purple text-white text-xs font-bold rounded-xl"
+                    className="flex-1 py-3 bg-gradient-to-r from-accent-rose to-accent-purple text-white text-xs font-bold rounded-xl shadow-lg shadow-accent-rose/20 hover:opacity-95"
                   >
-                    Publish Video
+                    Publish Video Now
                   </button>
                 </div>
               </div>

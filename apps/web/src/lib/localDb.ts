@@ -92,70 +92,70 @@ export interface MatchedMedia {
 
 export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   {
-    video_url: '/images/shibuya_rain_night.jpg',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/docs/walking.mp4',
     thumbnail_url: '/images/shibuya_rain_night.jpg',
     audio_url: '/audio/lofi.mp3',
-    title: 'Tokyo Blue Hour: Shibuya Rain',
+    title: 'Tokyo Midnight: Shibuya Rain',
     desc: 'Neon signs shimmering through rainy midnight crosswalks in Shibuya, capturing the quiet pulse of Tokyo.',
     genre: 'Documentary',
     tags: ['tokyo', 'shibuya', 'rain', 'neon', 'cityscape']
   },
   {
-    video_url: '/images/minimal_coding_setup.jpg',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/fog.mp4',
     thumbnail_url: '/images/minimal_coding_setup.jpg',
-    audio_url: '/audio/lofi.mp3',
+    audio_url: '/audio/lofi2.mp3',
     title: 'The Craft of Clean Code',
     desc: 'Inside the late-night workstation of a software artisan crafting elegant algorithms under warm task lighting.',
     genre: 'Documentary',
     tags: ['coding', 'developer', 'minimalism', 'workspace', 'tech']
   },
   {
-    video_url: '/images/generative_mesh_art.jpg',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/airplane.mp4',
     thumbnail_url: '/images/generative_mesh_art.jpg',
-    audio_url: '/audio/lofi2.mp3',
+    audio_url: '/audio/track5_action.mp3',
     title: 'Digital Canvas: Generative Geometry',
     desc: 'Algorithmic 3D wireframes and neon light pulses morphing seamlessly in an infinite computational space.',
     genre: 'Art',
     tags: ['art', 'generative', '3d', 'vectors', 'abstract']
   },
   {
-    video_url: '/images/puppies_autumn.jpg',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/kitten_fighting.mp4',
     thumbnail_url: '/images/puppies_autumn.jpg',
-    audio_url: '/audio/lofi2.mp3',
+    audio_url: '/audio/track4_playful.mp3',
     title: 'Golden Autumn: Joyful Puppy Paws',
     desc: 'Two adorable golden retriever puppies romping through a carpet of golden autumn leaves on a sunny afternoon.',
     genre: 'Comedy',
     tags: ['comedy', 'puppies', 'animals', 'cute', 'autumn']
   },
   {
-    video_url: '/images/savanna_migration.jpg',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/horses.mp4',
     thumbnail_url: '/images/savanna_migration.jpg',
-    audio_url: '/audio/lofi.mp3',
+    audio_url: '/audio/track7_savanna.mp3',
     title: 'Savanna Cycles: The Great Migration',
     desc: 'Wildebeest and zebra herds brave rushing river crossings in the timeless annual migration across the Serengeti.',
     genre: 'Animals',
     tags: ['animals', 'migration', 'savanna', 'wildlife', 'serengeti']
   },
   {
-    video_url: '/images/savanna_cheetah.jpg',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/snow_horses.mp4',
     thumbnail_url: '/images/savanna_cheetah.jpg',
-    audio_url: '/audio/lofi2.mp3',
+    audio_url: '/audio/track7_savanna.mp3',
     title: 'Dawn Patrol: The Cheetah Watch',
     desc: 'A sleek cheetah prowls silently through sunlit golden grasses with razor-sharp predatory focus.',
     genre: 'Animals',
     tags: ['animals', 'cheetah', 'wildlife', 'safari', 'dawn']
   },
   {
-    video_url: '/images/savanna_waterhole.jpg',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/cat.mp4',
     thumbnail_url: '/images/savanna_waterhole.jpg',
-    audio_url: '/audio/ambient.mp3',
+    audio_url: '/audio/track8_upbeat.mp3',
     title: 'Midday Sanctuary: The Waterhole Truce',
     desc: 'A serene gathering of giraffes, zebras, and birds sharing precious water under the scorching afternoon sun.',
     genre: 'Nature',
     tags: ['nature', 'waterhole', 'wildlife', 'oasis', 'serenity']
   },
   {
-    video_url: '/images/savanna_lion_night.jpg',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/eagle.mp4',
     thumbnail_url: '/images/savanna_lion_night.jpg',
     audio_url: '/audio/ambient.mp3',
     title: 'Night on the Grasslands: Celestial Pride',
@@ -166,7 +166,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/dog.mp4',
     thumbnail_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&h=250&q=80',
-    audio_url: '/audio/lofi2.mp3',
+    audio_url: '/audio/track8_upbeat.mp3',
     title: 'Golden Paws: Ocean Beach Fetch',
     desc: 'A joyful retriever dog dashing along the sunny shore and catching frisbees in pure exhilaration.',
     genre: 'Comedy',
@@ -175,7 +175,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/sea_turtle.mp4',
     thumbnail_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&h=250&q=80',
-    audio_url: '/audio/ambient.mp3',
+    audio_url: '/audio/track6_tranquil.mp3',
     title: 'Pacific Drifter: The Coral Sanctuary',
     desc: 'A majestic green sea turtle glides effortlessly through sunlit azure coastal currents and protected coral sanctuaries.',
     genre: 'Nature',
@@ -184,7 +184,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/elephants.mp4',
     thumbnail_url: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=400&h=250&q=80',
-    audio_url: '/audio/ambient.mp3',
+    audio_url: '/audio/track7_savanna.mp3',
     title: 'Gentle Giants: Savanna Herd Migration',
     desc: 'An elephant matriarch leads her family across the vast golden plains under ancient baobab trees.',
     genre: 'Animals',
@@ -193,7 +193,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/rafting.mp4',
     thumbnail_url: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=400&h=250&q=80',
-    audio_url: '/audio/lofi2.mp3',
+    audio_url: '/audio/track5_action.mp3',
     title: 'Whitewater Surge: Canyon Rapids',
     desc: 'A high-stakes river rafting crew battles roaring Category 5 white-water rapids through a steep volcanic gorge.',
     genre: 'Action',
@@ -220,7 +220,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   {
     video_url: '/coverr-test.mp4',
     thumbnail_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&h=250&q=80',
-    audio_url: '/audio/ambient.mp3',
+    audio_url: '/audio/track6_tranquil.mp3',
     title: 'Coastal Solitude: Ocean Shoreline',
     desc: 'Crystalline turquoise ocean waves rolling continuously over golden beach sands in unhurried, rhythmic beauty.',
     genre: 'Devotional',
@@ -460,8 +460,9 @@ const aiVideos = [
     id: 'vid-ai-1',
     creator_id: 'usr-ai',
     title: 'SHIBUYA SOUL',
-    description: 'A vertical cyberpunk visual study of rain reflections, neon signs, and urban loneliness in 2:00 AM Shibuya, Tokyo.',
-    video_url: '/images/shibuya_rain_night.jpg',
+    description: 'A vertical cyberpunk visual study of rain reflections, neon signs, and urban walking in 2:00 AM Shibuya, Tokyo.',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/docs/walking.mp4',
+    thumbnail_url: '/images/shibuya_rain_night.jpg',
     audio_url: '/audio/lofi.mp3',
     genre: 'Sci-Fi',
     tags: ['ai', 'cyberpunk', 'tokyo', 'neon', 'cinematic'],
@@ -473,8 +474,9 @@ const aiVideos = [
     id: 'vid-ai-2',
     creator_id: 'usr-ai',
     title: 'THE SYNAPSE CAFE',
-    description: 'A cozy, hyper-minimalist developer desk loop. A single widescreen monitor compiling code under warm amber lighting.',
-    video_url: '/images/minimal_coding_setup.jpg',
+    description: 'A cozy, hyper-minimalist atmospheric loop. Misty mountain fog drifting slowly under warm amber ambient tones.',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/fog.mp4',
+    thumbnail_url: '/images/minimal_coding_setup.jpg',
     audio_url: '/audio/lofi2.mp3',
     genre: 'Tech',
     tags: ['ai', 'minimalism', 'workspace', 'coding', 'asmr'],
@@ -486,9 +488,10 @@ const aiVideos = [
     id: 'vid-ai-3',
     creator_id: 'usr-ai',
     title: 'ALGORITHMIC CANVAS',
-    description: 'A study of generative abstract vectors and flowing laser meshes dancing in digital virtual coordinate planes.',
-    video_url: '/images/generative_mesh_art.jpg',
-    audio_url: '/audio/ambient.mp3',
+    description: 'A study of high-altitude flight soaring through digital skies and cloud layers above the earth.',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/airplane.mp4',
+    thumbnail_url: '/images/generative_mesh_art.jpg',
+    audio_url: '/audio/track5_action.mp3',
     genre: 'Art',
     tags: ['ai', 'generative', 'art', 'vectors', 'abstract'],
     views: 5200000,
@@ -505,7 +508,7 @@ aiVideos.forEach((v) => {
     description: v.description,
     video_url: v.video_url,
     audio_url: v.audio_url,
-    thumbnail_url: v.video_url,
+    thumbnail_url: v.thumbnail_url || v.video_url,
     content_type: 'short',
     language: 'en',
     genre: v.genre,
@@ -534,8 +537,8 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-1',
     title: 'Tokyo Midnight: Shibuya Rain',
     description: 'Two souls cross paths under umbrellas in the neon glow of midnight Shibuya as rainy reflections dance across the asphalt.',
-    video_url: '/images/shibuya_rain_night.jpg',
-    audio_url: '/audio/lofi.mp3',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/docs/walking.mp4',
+    audio_url: '/audio/track6_tranquil.mp3',
     thumbnail_url: '/images/shibuya_rain_night.jpg',
     content_type: 'short',
     language: 'en',
@@ -587,7 +590,7 @@ const openDramaSegmentVideos: Video[] = [
     title: 'Whitewater Surge: Canyon Rapids',
     description: 'A high-stakes river rafting crew battles roaring Category 5 white-water rapids through a steep volcanic gorge.',
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/rafting.mp4',
-    audio_url: '/audio/lofi2.mp3',
+    audio_url: '/audio/track5_action.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
     language: 'en',
@@ -613,7 +616,7 @@ const openDramaSegmentVideos: Video[] = [
     title: 'The Final 100 Meters: Finish Line Glory',
     description: 'An endurance runner summons the last burst of willpower to outpace the chasing pack and break the championship ribbon.',
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/finish_line.mp4',
-    audio_url: '/audio/lofi2.mp3',
+    audio_url: '/audio/track8_upbeat.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
     language: 'en',
@@ -638,8 +641,8 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-6',
     title: 'Autumn Antics: Puppy Playtime',
     description: 'Two golden retriever puppies discover a giant pile of dry autumn leaves and turn a peaceful park afternoon into pure joyful chaos.',
-    video_url: '/images/puppies_autumn.jpg',
-    audio_url: '/audio/lofi2.mp3',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/kitten_fighting.mp4',
+    audio_url: '/audio/track4_playful.mp3',
     thumbnail_url: '/images/puppies_autumn.jpg',
     content_type: 'short',
     language: 'en',
@@ -664,8 +667,8 @@ const openDramaSegmentVideos: Video[] = [
     creator_id: 'usr-9',
     title: 'Generative Art Gone Rogue',
     description: 'A digital artist sets algorithm parameters to auto-generate a fruit bowl, but the AI starts spinning neon hyper-dimensional geometric lattices instead.',
-    video_url: '/images/generative_mesh_art.jpg',
-    audio_url: '/audio/lofi.mp3',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/cat.mp4',
+    audio_url: '/audio/track8_upbeat.mp3',
     thumbnail_url: '/images/generative_mesh_art.jpg',
     content_type: 'short',
     language: 'en',
@@ -691,7 +694,7 @@ const openDramaSegmentVideos: Video[] = [
     title: 'Skyward Whispers: High Altitude Clouds',
     description: 'A hypnotic vertical time-lapse of golden sunset cumulus clouds drifting across high mountain peaks, set to sacred acoustic chords.',
     video_url: '/videos/cloudy-sky.mp4',
-    audio_url: '/audio/ambient.mp3',
+    audio_url: '/audio/track6_tranquil.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
     language: 'en',
@@ -795,7 +798,7 @@ const openDramaSegmentVideos: Video[] = [
     title: 'Golden Paws: Ocean Beach Fetch',
     description: 'A joyful golden retriever dashes along the sunny shoreline in high spirits, chasing frisbees and leaping through sea spray.',
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/dog.mp4',
-    audio_url: '/audio/lofi2.mp3',
+    audio_url: '/audio/track4_playful.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
     language: 'en',
@@ -821,7 +824,7 @@ const openDramaSegmentVideos: Video[] = [
     title: 'Savanna Giants: The Elephant Herd',
     description: 'An elephant family traverses the golden African savanna under baobab trees, moving together in ancient familial harmony.',
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/elephants.mp4',
-    audio_url: '/audio/ambient.mp3',
+    audio_url: '/audio/track7_savanna.mp3',
     thumbnail_url: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=400&h=250&q=80',
     content_type: 'short',
     language: 'en',
@@ -889,7 +892,7 @@ const SEED_AI_ANALYSIS: AIAnalysis[] = SEED_VIDEOS.slice(0, 5).map((v, i) => ({
 }));
 
 export const initializeLocalDb = () => {
-  const needsInit = !localStorage.getItem(DB_PREFIX + 'initialized_v31') || 
+  const needsInit = !localStorage.getItem(DB_PREFIX + 'initialized_v32') || 
                     !localStorage.getItem(DB_PREFIX + 'videos') || 
                     JSON.parse(localStorage.getItem(DB_PREFIX + 'videos') || '[]').length === 0;
 
@@ -914,7 +917,7 @@ export const initializeLocalDb = () => {
     setStorageItem('ai_analysis', SEED_AI_ANALYSIS);
     setStorageItem('content_events', []);
     setStorageItem('currentUser', SEED_PROFILES[0]); // Logged in as Alex Rivera by default for immediate preview
-    localStorage.setItem(DB_PREFIX + 'initialized_v31', 'true');
+    localStorage.setItem(DB_PREFIX + 'initialized_v32', 'true');
   }
 };
 
