@@ -5,6 +5,7 @@ import { Video, Profile, CreatorProfile } from '../types/schema';
 import { Heart, MessageCircle, Bookmark, Share2, AlertTriangle, Play, Volume2, VolumeX, Loader2, Plus, Check, Eye, EyeOff, ChevronDown } from 'lucide-react';
 
 import { mediaStorage } from '../lib/mediaStorage';
+import { resolveMediaUrl, handleImageError } from '../lib/mediaUtils';
 
 interface VerticalPlayerProps {
   video: Video;
@@ -20,14 +21,6 @@ interface SubtitleData {
   duration_ms: number;
   text: string;
 }
-
-const resolveMediaUrl = (url?: string): string => {
-  if (!url) return '';
-  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) return url;
-  const base = import.meta.env.BASE_URL || '/';
-  const clean = url.startsWith('/') ? url.slice(1) : url;
-  return `${base}${clean}`;
-};
 
 const AI_SUBTITLES: Record<string, { start: number; end: number; text: string }[]> = {
   'vid-ai-1': [
@@ -206,6 +199,9 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
     audioRef.current.volume = 1.0;
 
     if (isActive && isPlaying) {
+      if (videoRef.current) {
+        audioRef.current.currentTime = videoRef.current.currentTime;
+      }
       audioRef.current.play().catch(e => {
         console.warn('Audio playback waiting for user interaction:', e.message);
       });
@@ -239,40 +235,53 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
         videoRef.current.play()
           .then(() => {
             setIsPlaying(true);
+            if (audioRef.current && video.audio_url) {
+              audioRef.current.currentTime = videoRef.current ? videoRef.current.currentTime : 0;
+              if (!isMuted) {
+                audioRef.current.play().catch(() => {});
+              }
+            }
             dbClient.logEvent(user?.id || null, video.id, 'play');
           })
-          .catch((e) => {
-            // Autoplay blocked: set playing false
+          .catch(() => {
             setIsPlaying(false);
           });
       } else {
         videoRef.current.pause();
         videoRef.current.currentTime = 0;
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
         setIsPlaying(false);
-        // Reset checkpoints
         setCheckpoints({ p25: false, p50: false, p75: false, p100: false });
       }
     }
-  }, [isActive, video.id, user, isAiVideo]);
+  }, [isActive, video.id, user, isAiVideo, isMuted, video.audio_url]);
 
   const handlePlayPause = () => {
     const nextPlaying = !isPlaying;
     setIsPlaying(nextPlaying);
     dbClient.logEvent(user?.id || null, video.id, nextPlaying ? 'play' : 'pause');
 
-    if (audioRef.current) {
-      if (nextPlaying && isActive) {
-        audioRef.current.play().catch(() => {});
-      } else {
-        audioRef.current.pause();
-      }
-    }
-
     if (!isAiVideo && videoRef.current) {
       if (nextPlaying) {
         videoRef.current.play().catch(() => {});
       } else {
         videoRef.current.pause();
+      }
+    }
+
+    if (audioRef.current && video.audio_url) {
+      if (nextPlaying && isActive) {
+        if (videoRef.current) {
+          audioRef.current.currentTime = videoRef.current.currentTime;
+        }
+        if (!isMuted) {
+          audioRef.current.play().catch(() => {});
+        }
+      } else {
+        audioRef.current.pause();
       }
     }
   };
@@ -283,7 +292,8 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
     onMuteToggle();
     if (audioRef.current) {
       audioRef.current.muted = nextMuted;
-      if (!nextMuted && isPlaying) {
+      if (!nextMuted && isPlaying && videoRef.current) {
+        audioRef.current.currentTime = videoRef.current.currentTime;
         audioRef.current.play().catch(err => console.warn('Play error on unmute:', err));
       }
     }
@@ -299,6 +309,13 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
     const dur = videoRef.current.duration || video.duration_seconds || 1;
     setCurrentTime(curr);
     setDuration(dur);
+
+    // Absolutely lock audio to video time without drift
+    if (audioRef.current && video.audio_url && isPlaying && !isMuted) {
+      if (Math.abs(audioRef.current.currentTime - curr) > 0.08) {
+        audioRef.current.currentTime = curr;
+      }
+    }
 
     // Track percentage checkpoints
     const pct = (curr / dur) * 100;
@@ -319,12 +336,11 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
 
   const handleVideoEnded = () => {
     dbClient.logEvent(user?.id || null, video.id, 'complete');
-    // Save to history as completed
     if (user) {
       dbClient.updateWatchHistory(user.id, video.id, Math.floor(duration), Math.floor(duration));
     }
     
-    // Auto replay or move next
+    // Auto replay synchronized
     if (isAiVideo) {
       setCurrentTime(0);
       setIsPlaying(true);
@@ -333,6 +349,12 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
     }
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
+      if (audioRef.current && video.audio_url) {
+        audioRef.current.currentTime = 0;
+        if (!isMuted) {
+          audioRef.current.play().catch(() => {});
+        }
+      }
       videoRef.current.play();
       dbClient.logEvent(user?.id || null, video.id, 'replay');
     }

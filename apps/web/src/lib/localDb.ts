@@ -892,7 +892,7 @@ const SEED_AI_ANALYSIS: AIAnalysis[] = SEED_VIDEOS.slice(0, 5).map((v, i) => ({
 }));
 
 export const initializeLocalDb = () => {
-  const needsInit = !localStorage.getItem(DB_PREFIX + 'initialized_v32') || 
+  const needsInit = !localStorage.getItem(DB_PREFIX + 'initialized_v33') || 
                     !localStorage.getItem(DB_PREFIX + 'videos') || 
                     JSON.parse(localStorage.getItem(DB_PREFIX + 'videos') || '[]').length === 0;
 
@@ -917,7 +917,7 @@ export const initializeLocalDb = () => {
     setStorageItem('ai_analysis', SEED_AI_ANALYSIS);
     setStorageItem('content_events', []);
     setStorageItem('currentUser', SEED_PROFILES[0]); // Logged in as Alex Rivera by default for immediate preview
-    localStorage.setItem(DB_PREFIX + 'initialized_v32', 'true');
+    localStorage.setItem(DB_PREFIX + 'initialized_v33', 'true');
   }
 };
 

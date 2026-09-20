@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { dbClient } from '../lib/dbClient';
 import { mediaStorage } from '../lib/mediaStorage';
+import { resolveMediaUrl, handleImageError, DEFAULT_THUMBNAIL } from '../lib/mediaUtils';
 import { Video, Series, Season, CreatorProfile } from '../types/schema';
 import { 
   Play, BarChart2, Video as VideoIcon, Film, AlertCircle, Plus, Check, 
   Trash2, ArrowRight, ShieldCheck, RefreshCw, UploadCloud, Sparkles,
-  Music, Volume2, VolumeX, FileVideo, CheckCircle2, Pause
+  Music, Volume2, VolumeX, FileVideo, CheckCircle2, Pause, X
 } from 'lucide-react';
 
 export const AUDIO_TRACKS = [
@@ -132,12 +133,13 @@ export const Create: React.FC = () => {
   const [videoThumbnail, setVideoThumbnail] = useState('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80');
   const [isAutoThumb, setIsAutoThumb] = useState(false);
   const [videoDuration, setVideoDuration] = useState(30);
-  const [videoAudioUrl, setVideoAudioUrl] = useState('/audio/track8_upbeat.mp3');
+  const [videoAudioUrl, setVideoAudioUrl] = useState('');
   const [audioPreviewPlaying, setAudioPreviewPlaying] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isExtractingThumb, setIsExtractingThumb] = useState(false);
   const [rightsConfirmed, setRightsConfirmed] = useState(false);
   const [publishStatus, setPublishStatus] = useState<'draft' | 'published'>('published');
+  const [previewingVideo, setPreviewingVideo] = useState<Video | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const audioPreviewRef = useRef<HTMLAudioElement>(null);
@@ -619,10 +621,17 @@ export const Create: React.FC = () => {
                 {myVideos.map((vid) => (
                   <tr key={vid.id} className="hover:bg-bg-card/50 transition-colors">
                     <td className="p-4 flex items-center gap-3">
-                      <img src={vid.thumbnail_url || ''} alt="" className="w-12 h-8 object-cover rounded bg-bg-card" />
+                      <img 
+                        src={resolveMediaUrl(vid.thumbnail_url)} 
+                        onError={handleImageError} 
+                        alt="" 
+                        className="w-12 h-8 object-cover rounded bg-bg-card border border-border-dark" 
+                      />
                       <div>
                         <p className="font-bold text-white line-clamp-1">{vid.title}</p>
-                        <p className="text-[9px] text-text-muted">{new Date(vid.created_at).toLocaleDateString()}</p>
+                        <p className="text-[9px] text-text-muted">
+                          {new Date(vid.created_at).toLocaleDateString()} • {vid.duration_seconds || 30}s
+                        </p>
                       </div>
                     </td>
                     <td className="p-4 uppercase text-text-secondary font-semibold">{vid.content_type}</td>
@@ -630,13 +639,22 @@ export const Create: React.FC = () => {
                     <td className="p-4 text-right font-semibold text-white">{vid.view_count}</td>
                     <td className="p-4 text-right text-text-secondary">{vid.like_count}</td>
                     <td className="p-4 text-center">
-                      <button
-                        onClick={() => handleDeleteVideo(vid.id)}
-                        className="p-2 text-text-muted hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
-                        title="Delete video"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center justify-center gap-1">
+                        <button
+                          onClick={() => setPreviewingVideo(vid)}
+                          className="p-2 text-accent-rose hover:bg-accent-rose/15 rounded-xl transition-all"
+                          title="Preview & Play Video"
+                        >
+                          <Play className="w-4 h-4 fill-accent-rose" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteVideo(vid.id)}
+                          className="p-2 text-text-muted hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+                          title="Delete video"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -658,7 +676,12 @@ export const Create: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {mySeries.map((series) => (
             <div key={series.id} className="bg-bg-surface border border-border-dark rounded-2xl p-4 flex gap-4">
-              <img src={series.cover_url || ''} alt="" className="w-20 h-24 object-cover rounded-xl bg-bg-card flex-shrink-0" />
+              <img 
+                src={resolveMediaUrl(series.cover_url)} 
+                onError={handleImageError} 
+                alt="" 
+                className="w-20 h-24 object-cover rounded-xl bg-bg-card flex-shrink-0" 
+              />
               <div className="flex-1 flex flex-col justify-between">
                 <div>
                   <h4 className="font-bold text-white text-sm">{series.title}</h4>
@@ -1046,7 +1069,8 @@ export const Create: React.FC = () => {
 
                   <div className="flex gap-4 items-start">
                     <img
-                      src={videoThumbnail}
+                      src={resolveMediaUrl(videoThumbnail)}
+                      onError={handleImageError}
                       alt="Thumbnail preview"
                       className="w-28 h-36 object-cover rounded-xl border border-border-dark bg-bg-card shadow"
                     />
@@ -1287,6 +1311,39 @@ export const Create: React.FC = () => {
               Build Series Playlist
             </button>
           </form>
+        </div>
+      )}
+
+      {/* QUICK VIDEO PREVIEW MODAL */}
+      {previewingVideo && (
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fade-in">
+          <div className="relative w-full max-w-sm bg-bg-surface border border-border-dark rounded-3xl overflow-hidden shadow-2xl">
+            <div className="flex items-center justify-between p-4 border-b border-border-dark">
+              <div>
+                <h4 className="text-sm font-bold text-white line-clamp-1">{previewingVideo.title}</h4>
+                <p className="text-[10px] text-text-muted">{previewingVideo.genre} • {previewingVideo.duration_seconds || 30}s</p>
+              </div>
+              <button
+                onClick={() => setPreviewingVideo(null)}
+                className="p-1.5 rounded-full hover:bg-white/10 text-text-muted hover:text-white transition-colors"
+                title="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="relative aspect-[9/16] bg-black max-h-[70vh] flex items-center justify-center">
+              <video
+                src={resolveMediaUrl(previewingVideo.video_url)}
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full object-contain"
+              />
+              {previewingVideo.audio_url && (
+                <audio src={resolveMediaUrl(previewingVideo.audio_url)} autoPlay loop />
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>
