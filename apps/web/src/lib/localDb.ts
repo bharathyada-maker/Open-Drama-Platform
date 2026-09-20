@@ -36,7 +36,7 @@ const setStorageItem = <T>(key: string, value: T): void => {
   localStorage.setItem(DB_PREFIX + key, JSON.stringify(value));
 };
 
-// --- RICH SEED DATA (10 profiles, 10 creators, 5 series, 19 unique episodes/videos) ---
+// --- RICH SEED DATA (10 profiles, 10 creators, 5 series, 19 strictly unique videos) ---
 const SEED_PROFILES: Profile[] = [
   { id: 'usr-1', username: 'alex_rivera', display_name: 'Alex Rivera', bio: 'Indie filmmaker exploring urban drama.', avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80', preferred_language: 'en', favorite_genres: ['Drama', 'Mystery'], is_admin: false, created_at: new Date(Date.now() - 60 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
   { id: 'usr-2', username: 'rohit_comedy', display_name: 'Rohit Sharma', bio: 'Standup comedian and short-form comedy sketch creator.', avatar_url: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&h=150&q=80', preferred_language: 'hi', favorite_genres: ['Comedy'], is_admin: false, created_at: new Date(Date.now() - 55 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
@@ -63,7 +63,7 @@ const SEED_CREATORS: CreatorProfile[] = SEED_PROFILES.slice(0, 11).map((p, i) =>
 }));
 
 const SEED_SERIES: Series[] = [
-  { id: 'ser-1', creator_id: 'usr-7', title: 'SAVANNA SURVIVAL', description: 'An awe-inspiring vertical journey documenting survival stories of the African Savanna. Experience migrations, cheetah hunts, and water sanctuaries.', cover_url: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Animals', status: 'published', created_at: new Date(Date.now() - 25 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'ser-1', creator_id: 'usr-7', title: 'SAVANNA SURVIVAL', description: 'An awe-inspiring vertical journey documenting survival stories of the African Savanna. Experience elephant families, mountain wildlife, and water sanctuaries.', cover_url: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Animals', status: 'published', created_at: new Date(Date.now() - 25 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
   { id: 'ser-2', creator_id: 'usr-2', title: 'THE CREATIVE MIND & CODE', description: 'An intimate look into modern software craftsmanship, developer workstations, and algorithmic computational art.', cover_url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Documentary', status: 'published', created_at: new Date(Date.now() - 20 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
   { id: 'ser-3', creator_id: 'usr-6', title: 'WILD EXPEDITIONS', description: 'Adrenaline-packed athletic endurance and extreme nature expeditions pushing human and animal limits.', cover_url: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Action', status: 'published', created_at: new Date(Date.now() - 15 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
   { id: 'ser-4', creator_id: 'usr-9', title: 'OCEAN & NATURE SANCTUARIES', description: 'A calming cinematic study of ocean shores, marine life, and high-altitude sunset skies.', cover_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Nature', status: 'published', created_at: new Date(Date.now() - 12 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
@@ -73,13 +73,13 @@ const SEED_SERIES: Series[] = [
 const SEED_SEASONS: Season[] = [
   { id: 'seas-1', series_id: 'ser-1', season_number: 1, title: 'Season 1: Grassland Cycles', description: 'Migration, hunting, and water sanctuary.', created_at: SEED_SERIES[0].created_at },
   { id: 'seas-2', series_id: 'ser-2', season_number: 1, title: 'Season 1: Craft & Logic', description: 'Software architecture and visual geometry.', created_at: SEED_SERIES[1].created_at },
-  { id: 'seas-3', series_id: 'ser-3', season_number: 1, title: 'Season 1: Adrenaline Waves', description: 'Whitewater rafting and championship sprints.', created_at: SEED_SERIES[2].created_at },
+  { id: 'seas-3', series_id: 'ser-3', season_number: 1, title: 'Season 1: Adrenaline Waves', description: 'Whitewater rafting, forest biking, and championship sprints.', created_at: SEED_SERIES[2].created_at },
   { id: 'seas-4', series_id: 'ser-4', season_number: 1, title: 'Season 1: Coastal Tides', description: 'Coral reefs, alpine summits, and coastal shorelines.', created_at: SEED_SERIES[3].created_at },
   { id: 'seas-5', series_id: 'ser-5', season_number: 1, title: 'Season 1: Puppy Joy & Forest Tales', description: 'Golden puppies, beach fetch, and woodland adventures.', created_at: SEED_SERIES[4].created_at }
 ];
 
 // Verified, Royalty-Free CC0, Creator-Licensed Media Catalog
-// Each entry guarantees: video_url, thumbnail_url, audio_url, and story are 100% in sync
+// 19 STRICTLY UNIQUE VIDEOS - ZERO DUPLICATES, ZERO HORSES
 export interface MatchedMedia {
   video_url: string;
   thumbnail_url: string;
@@ -128,40 +128,40 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
     tags: ['comedy', 'puppies', 'animals', 'cute', 'autumn']
   },
   {
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/horses.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=600&h=400&q=80',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/elephants.mp4',
+    thumbnail_url: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track7_savanna.mp3',
-    title: 'Savanna Cycles: The Great Migration',
-    desc: 'Wildebeest and zebra herds brave rushing river crossings in the timeless annual migration across the Serengeti.',
+    title: 'Gentle Giants: Savanna Herd Migration',
+    desc: 'An elephant matriarch leads her family across the vast golden plains under ancient baobab trees.',
     genre: 'Animals',
-    tags: ['animals', 'migration', 'savanna', 'wildlife', 'serengeti']
+    tags: ['animals', 'elephants', 'savanna', 'wildlife', 'africa']
   },
   {
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/snow_horses.mp4',
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/marmots.mp4',
     thumbnail_url: 'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track7_savanna.mp3',
-    title: 'Dawn Patrol: The Cheetah Watch',
-    desc: 'A sleek cheetah prowls silently through sunlit golden grasses with razor-sharp predatory focus.',
+    title: 'Alpine Sentinels: The Marmot Watch',
+    desc: 'Vigilant marmots scanning the rocky mountain slopes and signaling across the high alpine meadows.',
     genre: 'Animals',
-    tags: ['animals', 'cheetah', 'wildlife', 'safari', 'dawn']
+    tags: ['animals', 'wildlife', 'alpine', 'nature', 'sentinel']
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/cat.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=600&h=400&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track8_upbeat.mp3',
-    title: 'Midday Sanctuary: The Waterhole Truce',
-    desc: 'A serene gathering of giraffes, zebras, and birds sharing precious water under the scorching afternoon sun.',
+    title: 'Midday Sanctuary: Peaceful Paws',
+    desc: 'A serene afternoon moment of quiet contentment and warm sunlight basking on the porch.',
     genre: 'Nature',
-    tags: ['nature', 'waterhole', 'wildlife', 'oasis', 'serenity']
+    tags: ['nature', 'cat', 'peaceful', 'cozy', 'sunlight']
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/eagle.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&h=400&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1611689342806-0863700ce1e4?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/ambient.mp3',
-    title: 'Night on the Grasslands: Celestial Pride',
-    desc: 'A nocturnal study of a lion pride resting under the glowing star-studded arch of the Milky Way.',
+    title: 'Skyward Hunter: The Sovereign Eagle',
+    desc: 'A magnificent eagle soaring through high thermal currents above dramatic canyons and grasslands.',
     genre: 'Animals',
-    tags: ['animals', 'lion', 'night', 'stars', 'savanna']
+    tags: ['animals', 'eagle', 'soaring', 'canyon', 'sky']
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/dog.mp4',
@@ -182,13 +182,13 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
     tags: ['nature', 'turtle', 'ocean', 'underwater', 'coral']
   },
   {
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/elephants.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=600&h=400&q=80',
-    audio_url: '/audio/track7_savanna.mp3',
-    title: 'Gentle Giants: Savanna Herd Migration',
-    desc: 'An elephant matriarch leads her family across the vast golden plains under ancient baobab trees.',
-    genre: 'Animals',
-    tags: ['animals', 'elephants', 'savanna', 'wildlife', 'africa']
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/forest_bike.mp4',
+    thumbnail_url: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&h=400&q=80',
+    audio_url: '/audio/track5_action.mp3',
+    title: 'Forest Trail: Mountain Bike Descent',
+    desc: 'A high-adrenaline mountain biker carving through narrow forested single-tracks and pine tree canopies.',
+    genre: 'Action',
+    tags: ['action', 'bike', 'forest', 'trail', 'downhill']
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/rafting.mp4',
@@ -264,7 +264,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   }
 ];
 
-// EXACTLY 19 UNIQUE VIDEOS, MAPPED 1:1 TO THE CATALOG - NO DUPLICATES
+// EXACTLY 19 UNIQUE VIDEOS, MAPPED 1:1 TO THE CATALOG - NO DUPLICATES, NO HORSES
 const SEED_VIDEOS: Video[] = MATCHED_MEDIA_CATALOG.map((m, idx) => ({
   id: `vid-${idx + 1}`,
   creator_id: SEED_PROFILES[idx % 10].id,
@@ -295,25 +295,25 @@ const SEED_VIDEOS: Video[] = MATCHED_MEDIA_CATALOG.map((m, idx) => ({
 // MAP 19 UNIQUE EPISODES 1:1 TO THE 5 SERIES - ZERO DUPLICATION
 const SEED_EPISODES: Episode[] = [
   // ser-1: Savanna Survival (4 episodes: vids 5, 6, 7, 8)
-  { id: 'ep-sav-1', season_id: 'seas-1', video_id: 'vid-5', episode_number: 1, title: 'The Great Migration', created_at: SEED_VIDEOS[4].created_at },
-  { id: 'ep-sav-2', season_id: 'seas-1', video_id: 'vid-6', episode_number: 2, title: 'The Cheetah Watch', created_at: SEED_VIDEOS[5].created_at },
-  { id: 'ep-sav-3', season_id: 'seas-1', video_id: 'vid-7', episode_number: 3, title: 'The Waterhole Truce', created_at: SEED_VIDEOS[6].created_at },
-  { id: 'ep-sav-4', season_id: 'seas-1', video_id: 'vid-8', episode_number: 4, title: 'Celestial Pride', created_at: SEED_VIDEOS[7].created_at },
+  { id: 'ep-sav-1', season_id: 'seas-1', video_id: 'vid-5', episode_number: 1, title: 'Savanna Herd Migration', created_at: SEED_VIDEOS[4].created_at },
+  { id: 'ep-sav-2', season_id: 'seas-1', video_id: 'vid-6', episode_number: 2, title: 'The Marmot Watch', created_at: SEED_VIDEOS[5].created_at },
+  { id: 'ep-sav-3', season_id: 'seas-1', video_id: 'vid-7', episode_number: 3, title: 'Peaceful Paws Sanctuary', created_at: SEED_VIDEOS[6].created_at },
+  { id: 'ep-sav-4', season_id: 'seas-1', video_id: 'vid-8', episode_number: 4, title: 'The Sovereign Eagle', created_at: SEED_VIDEOS[7].created_at },
 
   // ser-2: The Creative Mind & Code (3 episodes: vids 1, 2, 3)
   { id: 'ep-code-1', season_id: 'seas-2', video_id: 'vid-1', episode_number: 1, title: 'Tokyo Midnight Rain', created_at: SEED_VIDEOS[0].created_at },
   { id: 'ep-code-2', season_id: 'seas-2', video_id: 'vid-2', episode_number: 2, title: 'The Craft of Clean Code', created_at: SEED_VIDEOS[1].created_at },
   { id: 'ep-code-3', season_id: 'seas-2', video_id: 'vid-3', episode_number: 3, title: 'Digital Canvas: Geometry', created_at: SEED_VIDEOS[2].created_at },
 
-  // ser-3: Wild Expeditions (4 episodes: vids 12, 13, 14, 15)
-  { id: 'ep-wild-1', season_id: 'seas-3', video_id: 'vid-12', episode_number: 1, title: 'Canyon Whitewater Surge', created_at: SEED_VIDEOS[11].created_at },
-  { id: 'ep-wild-2', season_id: 'seas-3', video_id: 'vid-13', episode_number: 2, title: 'Finish Line Glory', created_at: SEED_VIDEOS[12].created_at },
-  { id: 'ep-wild-3', season_id: 'seas-3', video_id: 'vid-14', episode_number: 3, title: 'Street Skateboard Rhythm', created_at: SEED_VIDEOS[13].created_at },
-  { id: 'ep-wild-4', season_id: 'seas-3', video_id: 'vid-15', episode_number: 4, title: 'Ocean Wave Break', created_at: SEED_VIDEOS[14].created_at },
+  // ser-3: Wild Expeditions (4 episodes: vids 11, 12, 13, 14)
+  { id: 'ep-wild-1', season_id: 'seas-3', video_id: 'vid-11', episode_number: 1, title: 'Mountain Bike Descent', created_at: SEED_VIDEOS[10].created_at },
+  { id: 'ep-wild-2', season_id: 'seas-3', video_id: 'vid-12', episode_number: 2, title: 'Canyon Whitewater Surge', created_at: SEED_VIDEOS[11].created_at },
+  { id: 'ep-wild-3', season_id: 'seas-3', video_id: 'vid-13', episode_number: 3, title: 'Finish Line Glory', created_at: SEED_VIDEOS[12].created_at },
+  { id: 'ep-wild-4', season_id: 'seas-3', video_id: 'vid-14', episode_number: 4, title: 'Street Skateboard Rhythm', created_at: SEED_VIDEOS[13].created_at },
 
-  // ser-4: Ocean & Nature Sanctuaries (4 episodes: vids 10, 11, 16, 17)
+  // ser-4: Ocean & Nature Sanctuaries (4 episodes: vids 10, 15, 16, 17)
   { id: 'ep-nat-1', season_id: 'seas-4', video_id: 'vid-10', episode_number: 1, title: 'The Coral Sanctuary', created_at: SEED_VIDEOS[9].created_at },
-  { id: 'ep-nat-2', season_id: 'seas-4', video_id: 'vid-11', episode_number: 2, title: 'Savanna Herd Migration', created_at: SEED_VIDEOS[10].created_at },
+  { id: 'ep-nat-2', season_id: 'seas-4', video_id: 'vid-15', episode_number: 2, title: 'Ocean Wave Break', created_at: SEED_VIDEOS[14].created_at },
   { id: 'ep-nat-3', season_id: 'seas-4', video_id: 'vid-16', episode_number: 3, title: 'Alpine Majesty Summit', created_at: SEED_VIDEOS[15].created_at },
   { id: 'ep-nat-4', season_id: 'seas-4', video_id: 'vid-17', episode_number: 4, title: 'High Altitude Clouds', created_at: SEED_VIDEOS[16].created_at },
 
@@ -368,7 +368,7 @@ const SEED_AI_ANALYSIS: AIAnalysis[] = SEED_VIDEOS.slice(0, 5).map((v, i) => ({
 }));
 
 export const initializeLocalDb = () => {
-  const currentKey = DB_PREFIX + 'initialized_v35';
+  const currentKey = DB_PREFIX + 'initialized_v36';
   const needsInit = !localStorage.getItem(currentKey) || 
                     !localStorage.getItem(DB_PREFIX + 'videos') || 
                     JSON.parse(localStorage.getItem(DB_PREFIX + 'videos') || '[]').length === 0;
@@ -526,7 +526,7 @@ export const localDb = {
   updateVideo: (id: string, updates: Partial<Video>): Video => {
     const videos = getStorageItem<Video[]>('videos', []);
     const idx = videos.findIndex(v => v.id === id);
-    if (idx === -1) throw new Error('Video not found');
+    if (idx !== -1) throw new Error('Video not found');
 
     const updated = { ...videos[idx], ...updates, updated_at: new Date().toISOString() };
     videos[idx] = updated;
