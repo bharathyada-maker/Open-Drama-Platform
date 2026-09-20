@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { dbClient } from '../lib/dbClient';
 import { Video, Series } from '../types/schema';
 import { Bookmark, Heart, Film, Play, Eye } from 'lucide-react';
+import { resolveMediaUrl, handleImageError, DEFAULT_THUMBNAIL } from '../lib/mediaUtils';
 
 interface SavedProps {
   onVideoSelect: (videoId: string) => void;
@@ -96,7 +97,7 @@ export const Saved: React.FC<SavedProps> = ({ onVideoSelect, onSeriesSelect }) =
                   className="bg-bg-surface border border-border-dark/60 rounded-2xl overflow-hidden hover:border-slate-500 transition-all cursor-pointer group shadow-sm flex flex-col h-full"
                 >
                   <div className="relative aspect-video w-full overflow-hidden bg-black">
-                    <img src={vid.thumbnail_url || ''} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <img src={resolveMediaUrl(vid.thumbnail_url) || DEFAULT_THUMBNAIL} alt="" onError={handleImageError} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                     <span className="absolute bottom-1.5 right-1.5 bg-black/75 px-1.5 py-0.5 rounded text-[10px] font-bold font-mono text-slate-100 border border-white/5">
                       {Math.floor(vid.duration_seconds / 60)}:{(vid.duration_seconds % 60).toString().padStart(2, '0')}
                     </span>
@@ -127,7 +128,7 @@ export const Saved: React.FC<SavedProps> = ({ onVideoSelect, onSeriesSelect }) =
                   onClick={() => onSeriesSelect(series.id)}
                   className="bg-bg-surface border border-border-dark/60 rounded-2xl p-4 flex gap-4 hover:border-slate-500 transition-all cursor-pointer group"
                 >
-                  <img src={series.cover_url || ''} alt="" className="w-16 h-20 object-cover rounded-xl bg-bg-card flex-shrink-0" />
+                  <img src={resolveMediaUrl(series.cover_url) || DEFAULT_THUMBNAIL} alt="" onError={handleImageError} className="w-16 h-20 object-cover rounded-xl bg-bg-card flex-shrink-0" />
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
                       <h4 className="font-bold text-white text-xs line-clamp-1 leading-snug group-hover:text-accent-rose transition-colors">{series.title}</h4>

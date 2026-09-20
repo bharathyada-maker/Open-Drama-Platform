@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { dbClient } from '../lib/dbClient';
-import { Series, Season, Episode, Profile, WatchHistory } from '../types/schema';
-import { Play, ArrowLeft, Bookmark, Check, Calendar, Film, Loader2 } from 'lucide-react';
+import { Video, Series, Season, Episode, Profile, WatchHistory } from '../types/schema';
+import { ArrowLeft, Play, Bookmark, Clock, Check, Film, Share2, Loader2 } from 'lucide-react';
+import { resolveMediaUrl, handleImageError, DEFAULT_THUMBNAIL } from '../lib/mediaUtils';
 
 interface SeriesDetailProps {
   seriesId: string;
@@ -140,7 +141,7 @@ export const SeriesDetail: React.FC<SeriesDetailProps> = ({ seriesId, onBack, on
     <div className="min-h-screen bg-bg-dark text-slate-100 pb-24 animate-fade-in relative">
       {/* Background Cover Blurred Banner */}
       <div className="absolute top-0 left-0 w-full h-80 overflow-hidden opacity-10 pointer-events-none">
-        <img src={series.cover_url || ''} alt="" className="w-full h-full object-cover blur-2xl" />
+        <img src={resolveMediaUrl(series.cover_url) || DEFAULT_THUMBNAIL} alt="" onError={handleImageError} className="w-full h-full object-cover blur-2xl" />
       </div>
 
       <div className="max-w-4xl mx-auto px-6 pt-6 relative z-10">
@@ -153,7 +154,7 @@ export const SeriesDetail: React.FC<SeriesDetailProps> = ({ seriesId, onBack, on
         {/* Series Cover & Info Header Layout */}
         <div className="flex flex-col md:flex-row gap-6 items-start mb-8">
           <div className="w-full md:w-56 aspect-[3/4] bg-bg-card border border-border-dark rounded-2xl overflow-hidden shadow-lg flex-shrink-0">
-            <img src={series.cover_url || ''} alt={series.title} className="w-full h-full object-cover" />
+            <img src={resolveMediaUrl(series.cover_url) || DEFAULT_THUMBNAIL} alt={series.title} onError={handleImageError} className="w-full h-full object-cover" />
           </div>
 
           <div className="flex-1">

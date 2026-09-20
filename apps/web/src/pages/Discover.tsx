@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { dbClient } from '../lib/dbClient';
 import { Video, Series, Profile, CreatorProfile } from '../types/schema';
 import { Search, SlidersHorizontal, Eye, Heart, Film, User, Compass, Play } from 'lucide-react';
+import { resolveMediaUrl, handleImageError, DEFAULT_THUMBNAIL } from '../lib/mediaUtils';
 
 interface DiscoverProps {
   initialSearchQuery: string;
@@ -319,8 +320,9 @@ export const Discover: React.FC<DiscoverProps> = ({ initialSearchQuery, setTab, 
               {/* Thumbnail Container */}
               <div className="relative aspect-video w-full overflow-hidden bg-black">
                 <img
-                  src={video.thumbnail_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80'}
+                  src={resolveMediaUrl(video.thumbnail_url) || DEFAULT_THUMBNAIL}
                   alt={video.title}
+                  onError={handleImageError}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <span className="absolute bottom-2 right-2 bg-black/75 px-1.5 py-0.5 rounded text-[10px] font-bold font-mono text-slate-100 border border-white/5">
@@ -373,8 +375,9 @@ export const Discover: React.FC<DiscoverProps> = ({ initialSearchQuery, setTab, 
                 {/* Cover Image */}
                 <div className="w-28 xs:w-32 aspect-[3/4] overflow-hidden bg-black flex-shrink-0 relative">
                   <img
-                    src={series.cover_url || 'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=400&h=500&q=80'}
+                    src={resolveMediaUrl(series.cover_url) || DEFAULT_THUMBNAIL}
                     alt={series.title}
+                    onError={handleImageError}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[8px] font-extrabold uppercase bg-accent-rose text-white border border-accent-rose/10">
@@ -428,8 +431,9 @@ export const Discover: React.FC<DiscoverProps> = ({ initialSearchQuery, setTab, 
               >
                 <div className="flex flex-col items-center">
                   <img
-                    src={profile.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${profile.username}`}
+                    src={resolveMediaUrl(profile.avatar_url) || `https://api.dicebear.com/7.x/bottts/svg?seed=${profile.username}`}
                     alt={creator.creator_name}
+                    onError={handleImageError}
                     className="w-16 h-16 rounded-2xl bg-bg-card border border-border-dark p-1 object-cover mb-3"
                   />
                   <h4 className="text-sm font-bold text-white line-clamp-1 mb-0.5">{creator.creator_name}</h4>

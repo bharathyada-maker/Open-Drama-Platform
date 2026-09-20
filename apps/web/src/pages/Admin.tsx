@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { dbClient } from '../lib/dbClient';
 import { Report, Video } from '../types/schema';
 import { Shield, Check, AlertTriangle, XCircle, RefreshCw, Eye, ExternalLink, Loader2 } from 'lucide-react';
+import { resolveMediaUrl, handleImageError, DEFAULT_THUMBNAIL } from '../lib/mediaUtils';
 
 export const Admin: React.FC = () => {
   const { user } = useAuth();
@@ -189,7 +190,7 @@ export const Admin: React.FC = () => {
 
                     {report.video && (
                       <div className="flex items-center gap-3 bg-bg-card/45 border border-border-dark p-3 rounded-xl max-w-md">
-                        <img src={report.video.thumbnail_url || ''} alt="" className="w-12 h-8 object-cover rounded bg-bg-surface" />
+                        <img src={resolveMediaUrl(report.video.thumbnail_url) || DEFAULT_THUMBNAIL} alt="" onError={handleImageError} className="w-12 h-8 object-cover rounded bg-bg-surface" />
                         <div className="flex-1 min-w-0">
                           <p className="text-[11px] font-bold text-white truncate">{report.video.title}</p>
                           <p className="text-[9px] text-text-muted truncate">Format: {report.video.content_type} | ID: {report.video.id}</p>

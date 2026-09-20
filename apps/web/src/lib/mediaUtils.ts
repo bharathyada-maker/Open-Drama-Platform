@@ -14,9 +14,11 @@ export const resolveMediaUrl = (url?: string | null): string => {
   ) {
     return url;
   }
-  const base = import.meta.env.BASE_URL || '/';
+  const isGitHubPages = typeof window !== 'undefined' && window.location.pathname.includes('/Open-Drama-Platform');
+  const base = isGitHubPages ? '/Open-Drama-Platform/' : (import.meta.env.BASE_URL || '/');
   const clean = url.startsWith('/') ? url.slice(1) : url;
-  return `${base}${clean}`;
+  const prefix = base.endsWith('/') ? base : `${base}/`;
+  return `${prefix}${clean}`;
 };
 
 export const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {

@@ -4,6 +4,7 @@ import { dbClient } from '../lib/dbClient';
 import { Video, Series, CreatorProfile, WatchHistory } from '../types/schema';
 import { VerticalFeed } from '../components/VerticalFeed';
 import { Play, TrendingUp, Users, Clock, Flame, Compass, ChevronRight, Check, Sparkles } from 'lucide-react';
+import { resolveMediaUrl, handleImageError, DEFAULT_THUMBNAIL } from '../lib/mediaUtils';
 
 interface HomeProps {
   setTab: (tab: string) => void;
@@ -127,7 +128,7 @@ export const Home: React.FC<HomeProps> = ({ setTab, onVideoSelect, onCreatorSele
                       className="bg-bg-surface border border-border-dark rounded-2xl p-3 flex gap-3 cursor-pointer hover:border-slate-500 transition-all flex-shrink-0 w-80 shadow-md group"
                     >
                       <div className="w-24 h-16 rounded-xl overflow-hidden bg-bg-card relative flex-shrink-0">
-                        <img src={hist.video.thumbnail_url || ''} alt="" className="w-full h-full object-cover" />
+                        <img src={resolveMediaUrl(hist.video.thumbnail_url) || DEFAULT_THUMBNAIL} alt="" onError={handleImageError} className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-black/35 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <Play className="w-6 h-6 text-white fill-white" />
                         </div>
@@ -203,13 +204,10 @@ export const Home: React.FC<HomeProps> = ({ setTab, onVideoSelect, onCreatorSele
                 >
                   <div className="relative aspect-video w-full overflow-hidden bg-black">
                     <img 
-                      src={video.thumbnail_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80'} 
+                      src={resolveMediaUrl(video.thumbnail_url) || DEFAULT_THUMBNAIL} 
                       alt="" 
                       referrerPolicy="no-referrer"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80';
-                      }}
+                      onError={handleImageError}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                     />
                     <span className="absolute bottom-1 right-1.5 bg-black/75 px-1.5 py-0.5 rounded text-[9px] font-bold font-mono text-slate-100 border border-white/5">
@@ -268,8 +266,9 @@ export const Home: React.FC<HomeProps> = ({ setTab, onVideoSelect, onCreatorSele
                     className="bg-bg-surface border border-border-dark hover:border-slate-500 rounded-2xl p-4 flex items-center gap-3 cursor-pointer transition-all"
                   >
                     <img
-                      src={p?.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${creator.creator_name}`}
+                      src={resolveMediaUrl(p?.avatar_url) || `https://api.dicebear.com/7.x/bottts/svg?seed=${creator.creator_name}`}
                       alt=""
+                      onError={handleImageError}
                       className="w-12 h-12 rounded-xl bg-bg-card border border-border-dark p-0.5 object-cover"
                     />
                     <div className="min-w-0 flex-1">
@@ -294,13 +293,10 @@ export const Home: React.FC<HomeProps> = ({ setTab, onVideoSelect, onCreatorSele
                 >
                   <div className="relative aspect-video w-full overflow-hidden bg-black">
                     <img 
-                      src={video.thumbnail_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80'} 
+                      src={resolveMediaUrl(video.thumbnail_url) || DEFAULT_THUMBNAIL} 
                       alt="" 
                       referrerPolicy="no-referrer"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&h=250&q=80';
-                      }}
+                      onError={handleImageError}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                     />
                     <span className="absolute bottom-1 right-1.5 bg-black/75 px-1.5 py-0.5 rounded text-[9px] font-bold font-mono text-slate-100 border border-white/5">
@@ -329,7 +325,7 @@ export const Home: React.FC<HomeProps> = ({ setTab, onVideoSelect, onCreatorSele
                   onClick={() => onSeriesSelect(series.id)}
                   className="bg-bg-surface border border-border-dark/60 rounded-2xl p-4 flex gap-4 hover:border-slate-500 transition-all cursor-pointer group"
                 >
-                  <img src={series.cover_url || ''} alt="" className="w-16 h-20 object-cover rounded-xl bg-bg-card flex-shrink-0" />
+                  <img src={resolveMediaUrl(series.cover_url) || DEFAULT_THUMBNAIL} alt="" onError={handleImageError} className="w-16 h-20 object-cover rounded-xl bg-bg-card flex-shrink-0" />
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
                       <h4 className="font-bold text-white text-xs line-clamp-1 leading-snug group-hover:text-accent-rose transition-colors">{series.title}</h4>

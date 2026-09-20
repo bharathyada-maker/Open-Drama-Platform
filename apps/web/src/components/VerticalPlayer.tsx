@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { dbClient } from '../lib/dbClient';
 import { Video, Profile, CreatorProfile } from '../types/schema';
-import { Heart, MessageCircle, Bookmark, Share2, AlertTriangle, Play, Volume2, VolumeX, Loader2, Plus, Check, Eye, EyeOff, ChevronDown } from 'lucide-react';
+import { Heart, MessageCircle, Bookmark, Share2, AlertTriangle, Play, Volume2, VolumeX, Loader2, Plus, Check, Eye, EyeOff, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { mediaStorage } from '../lib/mediaStorage';
 import { resolveMediaUrl, handleImageError } from '../lib/mediaUtils';
@@ -81,6 +81,7 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
   const lastLoadedAudioSrcRef = useRef<string>('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [isCinematic, setIsCinematic] = useState(true);
+  const [isActionsOpen, setIsActionsOpen] = useState(false);
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [following, setFollowing] = useState(false);
@@ -145,36 +146,7 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
     fetchRelations();
   }, [video.id, video.creator_id, user]);
 
-  const isAiVideo = video.video_url.includes('/images/');
 
-  // Simulating time progression for AI video
-  useEffect(() => {
-    if (!isAiVideo || !isActive) return;
-    
-    let intervalId: any;
-    if (isPlaying) {
-      intervalId = setInterval(() => {
-        setCurrentTime((prev) => {
-          const next = prev + 0.1;
-          const dur = video.duration_seconds || 15;
-          if (next >= dur) {
-            handleVideoEnded();
-            return 0;
-          }
-          return next;
-        });
-      }, 100);
-    }
-    
-    return () => clearInterval(intervalId);
-  }, [isAiVideo, isPlaying, isActive]);
-
-  // Sync duration for AI video
-  useEffect(() => {
-    if (isAiVideo) {
-      setDuration(video.duration_seconds || 15);
-    }
-  }, [isAiVideo, video.duration_seconds]);
 
   // Unified bulletproof audio synchronizer hook
   useEffect(() => {
@@ -216,20 +188,8 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
     }
   }, [video.id, video.audio_url, isActive, isPlaying, isMuted]);
 
-  // Handle Autoplay Active changes
+  // Bulletproof video play / pause when active changes
   useEffect(() => {
-    if (isAiVideo) {
-      if (isActive) {
-        setIsPlaying(true);
-        dbClient.logEvent(user?.id || null, video.id, 'play');
-      } else {
-        setIsPlaying(false);
-        setCurrentTime(0);
-        setCheckpoints({ p25: false, p50: false, p75: false, p100: false });
-      }
-      return;
-    }
-
     if (videoRef.current) {
       if (isActive) {
         videoRef.current.play()
@@ -257,14 +217,14 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
         setCheckpoints({ p25: false, p50: false, p75: false, p100: false });
       }
     }
-  }, [isActive, video.id, user, isAiVideo, isMuted, video.audio_url]);
+  }, [isActive, video.id, user, isMuted, video.audio_url]);
 
   const handlePlayPause = () => {
     const nextPlaying = !isPlaying;
     setIsPlaying(nextPlaying);
     dbClient.logEvent(user?.id || null, video.id, nextPlaying ? 'play' : 'pause');
 
-    if (!isAiVideo && videoRef.current) {
+    if (videoRef.current) {
       if (nextPlaying) {
         videoRef.current.play().catch(() => {});
       } else {
@@ -303,7 +263,6 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
   };
 
   const handleTimeUpdate = () => {
-    if (isAiVideo) return;
     if (!videoRef.current) return;
     const curr = videoRef.current.currentTime;
     const dur = videoRef.current.duration || video.duration_seconds || 1;
@@ -340,13 +299,6 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
       dbClient.updateWatchHistory(user.id, video.id, Math.floor(duration), Math.floor(duration));
     }
     
-    // Auto replay synchronized
-    if (isAiVideo) {
-      setCurrentTime(0);
-      setIsPlaying(true);
-      dbClient.logEvent(user?.id || null, video.id, 'replay');
-      return;
-    }
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
       if (audioRef.current && video.audio_url) {
@@ -454,9 +406,7 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
     }
   };
 
-  const activeSub = isAiVideo 
-    ? (AI_SUBTITLES[video.id] || []).find(s => currentTime >= s.start && currentTime <= s.end)?.text
-    : null;
+  const activeSub = (AI_SUBTITLES[video.id] || []).find(s => currentTime >= s.start && currentTime <= s.end)?.text || null;
 
   return (
     <div
@@ -474,55 +424,28 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
         />
       )}
 
-      {/* Video / AI image stream container */}
-      {isAiVideo ? (
-        <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-black aspect-[9/16]">
-          {/* Ken Burns effect container */}
-          <div 
-            className="w-full h-full bg-cover bg-center transition-transform ease-out"
-            style={{ 
-              backgroundImage: `url(${resolveMediaUrl(video.video_url)})`,
-              transform: isPlaying 
-                ? `scale(${1.08 + Math.sin(currentTime / 2.5) * 0.04}) translate(${Math.cos(currentTime / 3) * 1.5}%, ${Math.sin(currentTime / 3) * 1.5}%)`
-                : 'scale(1.05) translate(0%, 0%)',
-              filter: 'brightness(0.9) contrast(1.05)',
-              transitionDuration: '100ms'
-            }}
-          />
-          {/* Pulsing neon color filter matching the neon horizons vibe */}
-          <div 
-            className="absolute inset-0 pointer-events-none mix-blend-color-dodge transition-opacity duration-1000"
-            style={{
-              background: 'radial-gradient(circle, rgba(236,72,153,0.15) 0%, rgba(139,92,246,0.08) 70%)',
-              opacity: isPlaying ? 0.6 + Math.sin(currentTime * 2) * 0.2 : 0.4
-            }}
-          />
-          {/* Film ambient lighting overlay */}
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-accent-rose/5 via-transparent to-accent-purple/5 mix-blend-overlay" />
-          
-          {/* Subtitle kinetic text box */}
-          {activeSub && (
-            <div className={`absolute bottom-28 left-4 right-4 text-center z-20 pointer-events-none transition-all duration-300 transform ${
-              isCinematic ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100'
-            }`}>
-              <span className="px-4 py-2 rounded-xl bg-black/65 border border-white/10 backdrop-blur-md text-white text-xs md:text-sm font-medium tracking-wide leading-relaxed inline-block shadow-xl max-w-[85%]">
-                {activeSub}
-              </span>
-            </div>
-          )}
+      {/* Pure Native Video Stream */}
+      <video
+        ref={videoRef}
+        src={resolvedVideoUrl}
+        loop
+        playsInline
+        muted={isMuted || !!video.audio_url}
+        onTimeUpdate={handleTimeUpdate}
+        onDurationChange={() => videoRef.current && setDuration(videoRef.current.duration)}
+        onEnded={handleVideoEnded}
+        className="w-full h-full object-cover aspect-[9/16]"
+      />
+
+      {/* Subtitle kinetic text box */}
+      {activeSub && (
+        <div className={`absolute bottom-28 left-4 right-4 text-center z-20 pointer-events-none transition-all duration-300 transform ${
+          isCinematic ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100'
+        }`}>
+          <span className="px-4 py-2 rounded-xl bg-black/65 border border-white/10 backdrop-blur-md text-white text-xs md:text-sm font-medium tracking-wide leading-relaxed inline-block shadow-xl max-w-[85%]">
+            {activeSub}
+          </span>
         </div>
-      ) : (
-        <video
-          ref={videoRef}
-          src={resolvedVideoUrl}
-          loop
-          playsInline
-          muted={isMuted || !!video.audio_url}
-          onTimeUpdate={handleTimeUpdate}
-          onDurationChange={() => videoRef.current && setDuration(videoRef.current.duration)}
-          onEnded={handleVideoEnded}
-          className="w-full h-full object-cover aspect-[9/16]"
-        />
       )}
 
       {/* Loading state indicator */}
@@ -629,67 +552,101 @@ export const VerticalPlayer: React.FC<VerticalPlayerProps> = ({ video, isActive,
         </div>
       </div>
 
-      {/* Action Buttons Panel (Right Side) */}
-      <div className="absolute bottom-16 right-4 flex flex-col items-center gap-5 z-10 text-white">
+      {/* Collapsed Action Bar Expand Trigger (Discreet edge tab) */}
+      <button
+        onClick={(e) => { e.stopPropagation(); setIsActionsOpen(true); }}
+        className={`absolute bottom-24 right-0 z-20 py-2.5 px-1.5 rounded-l-xl bg-black/50 hover:bg-black/80 backdrop-blur-md border-y border-l border-white/15 text-white/80 hover:text-white transition-all duration-300 shadow-2xl flex flex-col items-center gap-1 group cursor-pointer ${
+          isActionsOpen ? 'opacity-0 pointer-events-none translate-x-6' : 'opacity-85 hover:opacity-100 translate-x-0'
+        }`}
+        title="Show actions (Like, Save, Share...)"
+      >
+        <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+        <span className="text-[9px] font-semibold tracking-wider uppercase [writing-mode:vertical-rl] rotate-180 text-slate-300 group-hover:text-white">
+          Actions
+        </span>
+      </button>
+
+      {/* Action Buttons Panel (Right Side - Collapsed by default while playing) */}
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className={`absolute bottom-16 right-3 flex flex-col items-center gap-4 z-20 text-white transition-all duration-300 ease-out transform ${
+          isActionsOpen 
+            ? 'translate-x-0 opacity-100 pointer-events-auto' 
+            : 'translate-x-16 opacity-0 pointer-events-none'
+        }`}
+      >
+        {/* Collapse button at top of action stack */}
+        <button
+          onClick={(e) => { e.stopPropagation(); setIsActionsOpen(false); }}
+          className="p-1.5 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 text-white/70 hover:text-white backdrop-blur-md shadow-md transition-all hover:scale-105 active:scale-95 mb-0.5"
+          title="Collapse actions"
+        >
+          <ChevronRight className="w-3.5 h-3.5" />
+        </button>
+
         {/* Like Button */}
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-0.5">
           <button
             onClick={handleLikeToggle}
             className={`p-3 rounded-full backdrop-blur-md border shadow-lg transition-all transform hover:scale-105 active:scale-95 ${
               liked
                 ? 'bg-accent-rose border-accent-rose text-white shadow-accent-rose/30'
-                : 'bg-black/40 border-white/10 text-white hover:bg-black/60'
+                : 'bg-black/50 border-white/15 text-white hover:bg-black/70'
             }`}
+            title="Like"
           >
-            <Heart className={`w-5.5 h-5.5 ${liked ? 'fill-white' : ''}`} />
+            <Heart className={`w-5 h-5 ${liked ? 'fill-white' : ''}`} />
           </button>
-          <span className="text-[11px] font-bold text-slate-300 drop-shadow">{likesCount}</span>
+          <span className="text-[11px] font-bold text-slate-200 drop-shadow">{likesCount}</span>
         </div>
 
         {/* Comment Button */}
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-0.5">
           <button
             onClick={(e) => { e.stopPropagation(); onCommentsClick(video.id); }}
-            className="p-3 rounded-full bg-black/40 border border-white/10 hover:bg-black/60 backdrop-blur-md shadow-lg transition-all transform hover:scale-105"
+            className="p-3 rounded-full bg-black/50 border border-white/15 hover:bg-black/70 backdrop-blur-md shadow-lg transition-all transform hover:scale-105 active:scale-95"
+            title="Comments"
           >
-            <MessageCircle className="w-5.5 h-5.5 text-white" />
+            <MessageCircle className="w-5 h-5 text-white" />
           </button>
-          <span className="text-[11px] font-bold text-slate-300 drop-shadow">{video.comment_count || 0}</span>
+          <span className="text-[11px] font-bold text-slate-200 drop-shadow">{video.comment_count || 0}</span>
         </div>
 
         {/* Save/Watchlist Button */}
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-0.5">
           <button
             onClick={handleSaveToggle}
             className={`p-3 rounded-full backdrop-blur-md border shadow-lg transition-all transform hover:scale-105 active:scale-95 ${
               saved
                 ? 'bg-accent-purple border-accent-purple text-white shadow-accent-purple/30'
-                : 'bg-black/40 border-white/10 text-white hover:bg-black/60'
+                : 'bg-black/50 border-white/15 text-white hover:bg-black/70'
             }`}
+            title="Save to Watchlist"
           >
-            <Bookmark className={`w-5.5 h-5.5 ${saved ? 'fill-white' : ''}`} />
+            <Bookmark className={`w-5 h-5 ${saved ? 'fill-white' : ''}`} />
           </button>
-          <span className="text-[11px] font-bold text-slate-300 drop-shadow">Save</span>
+          <span className="text-[10px] font-bold text-slate-200 drop-shadow">Save</span>
         </div>
 
         {/* Share Button */}
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-0.5">
           <button
             onClick={handleShareClick}
-            className="p-3 rounded-full bg-black/40 border border-white/10 hover:bg-black/60 backdrop-blur-md shadow-lg transition-all transform hover:scale-105"
+            className="p-3 rounded-full bg-black/50 border border-white/15 hover:bg-black/70 backdrop-blur-md shadow-lg transition-all transform hover:scale-105 active:scale-95"
+            title="Share"
           >
-            <Share2 className="w-5.5 h-5.5 text-white" />
+            <Share2 className="w-5 h-5 text-white" />
           </button>
-          <span className="text-[11px] font-bold text-slate-300 drop-shadow">Share</span>
+          <span className="text-[10px] font-bold text-slate-200 drop-shadow">Share</span>
         </div>
 
         {/* Moderation / Report Button */}
         <button
           onClick={handleReportClick}
-          className="p-2.5 rounded-full bg-black/40 border border-white/5 text-text-muted hover:text-red-400 backdrop-blur-md shadow-sm transition-colors mt-2"
+          className="p-2.5 rounded-full bg-black/50 border border-white/10 text-slate-400 hover:text-red-400 backdrop-blur-md shadow-sm transition-colors mt-1"
           title="Report content"
         >
-          <AlertTriangle className="w-4.5 h-4.5" />
+          <AlertTriangle className="w-4 h-4" />
         </button>
       </div>
 

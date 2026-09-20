@@ -36,7 +36,7 @@ const setStorageItem = <T>(key: string, value: T): void => {
   localStorage.setItem(DB_PREFIX + key, JSON.stringify(value));
 };
 
-// --- RICH SEED DATA (10 profiles, 10 creators, 5 series, 20 episodes, 30 videos) ---
+// --- RICH SEED DATA (10 profiles, 10 creators, 5 series, 19 unique episodes/videos) ---
 const SEED_PROFILES: Profile[] = [
   { id: 'usr-1', username: 'alex_rivera', display_name: 'Alex Rivera', bio: 'Indie filmmaker exploring urban drama.', avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80', preferred_language: 'en', favorite_genres: ['Drama', 'Mystery'], is_admin: false, created_at: new Date(Date.now() - 60 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
   { id: 'usr-2', username: 'rohit_comedy', display_name: 'Rohit Sharma', bio: 'Standup comedian and short-form comedy sketch creator.', avatar_url: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&h=150&q=80', preferred_language: 'hi', favorite_genres: ['Comedy'], is_admin: false, created_at: new Date(Date.now() - 55 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
@@ -63,19 +63,19 @@ const SEED_CREATORS: CreatorProfile[] = SEED_PROFILES.slice(0, 11).map((p, i) =>
 }));
 
 const SEED_SERIES: Series[] = [
-  { id: 'ser-1', creator_id: 'usr-ai', title: 'SAVANNA SURVIVAL', description: 'An awe-inspiring vertical journey documenting survival stories of the African Savanna. Experience migrations, cheetah hunts, and water sanctuaries.', cover_url: '/images/savanna_migration.jpg', language: 'en', genre: 'Animals', status: 'published', created_at: new Date(Date.now() - 25 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'ser-2', creator_id: 'usr-2', title: 'THE CREATIVE MIND & CODE', description: 'An intimate look into modern software craftsmanship, developer workstations, and algorithmic computational art.', cover_url: '/images/minimal_coding_setup.jpg', language: 'en', genre: 'Documentary', status: 'published', created_at: new Date(Date.now() - 20 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'ser-3', creator_id: 'usr-10', title: 'WILD EXPEDITIONS', description: 'Adrenaline-packed athletic endurance and extreme nature expeditions pushing human and animal limits.', cover_url: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Action', status: 'published', created_at: new Date(Date.now() - 15 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'ser-4', creator_id: 'usr-4', title: 'OCEAN & NATURE SANCTUARIES', description: 'A calming cinematic study of ocean shores, marine life, and high-altitude sunset skies.', cover_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Nature', status: 'published', created_at: new Date(Date.now() - 12 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'ser-5', creator_id: 'usr-6', title: 'PLAYFUL PAWS', description: 'Heartwarming, joyful moments following playful puppy adventures in the great outdoors.', cover_url: '/images/puppies_autumn.jpg', language: 'en', genre: 'Comedy', status: 'published', created_at: new Date(Date.now() - 10 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() }
+  { id: 'ser-1', creator_id: 'usr-7', title: 'SAVANNA SURVIVAL', description: 'An awe-inspiring vertical journey documenting survival stories of the African Savanna. Experience migrations, cheetah hunts, and water sanctuaries.', cover_url: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Animals', status: 'published', created_at: new Date(Date.now() - 25 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'ser-2', creator_id: 'usr-2', title: 'THE CREATIVE MIND & CODE', description: 'An intimate look into modern software craftsmanship, developer workstations, and algorithmic computational art.', cover_url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Documentary', status: 'published', created_at: new Date(Date.now() - 20 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'ser-3', creator_id: 'usr-6', title: 'WILD EXPEDITIONS', description: 'Adrenaline-packed athletic endurance and extreme nature expeditions pushing human and animal limits.', cover_url: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Action', status: 'published', created_at: new Date(Date.now() - 15 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'ser-4', creator_id: 'usr-9', title: 'OCEAN & NATURE SANCTUARIES', description: 'A calming cinematic study of ocean shores, marine life, and high-altitude sunset skies.', cover_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Nature', status: 'published', created_at: new Date(Date.now() - 12 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'ser-5', creator_id: 'usr-4', title: 'PLAYFUL COMPANIONS & TALES', description: 'Heartwarming, joyful moments following playful puppy adventures and charming forest animal tales.', cover_url: 'https://images.unsplash.com/photo-1591160690555-5debfba289f0?auto=format&fit=crop&w=800&h=500&q=80', language: 'en', genre: 'Comedy', status: 'published', created_at: new Date(Date.now() - 10 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() }
 ];
 
 const SEED_SEASONS: Season[] = [
   { id: 'seas-1', series_id: 'ser-1', season_number: 1, title: 'Season 1: Grassland Cycles', description: 'Migration, hunting, and water sanctuary.', created_at: SEED_SERIES[0].created_at },
   { id: 'seas-2', series_id: 'ser-2', season_number: 1, title: 'Season 1: Craft & Logic', description: 'Software architecture and visual geometry.', created_at: SEED_SERIES[1].created_at },
   { id: 'seas-3', series_id: 'ser-3', season_number: 1, title: 'Season 1: Adrenaline Waves', description: 'Whitewater rafting and championship sprints.', created_at: SEED_SERIES[2].created_at },
-  { id: 'seas-4', series_id: 'ser-4', season_number: 1, title: 'Season 1: Coastal Tides', description: 'Coral reefs and coastal shorelines.', created_at: SEED_SERIES[3].created_at },
-  { id: 'seas-5', series_id: 'ser-5', season_number: 1, title: 'Season 1: Puppy Joy', description: 'Golden puppies and beach games.', created_at: SEED_SERIES[4].created_at }
+  { id: 'seas-4', series_id: 'ser-4', season_number: 1, title: 'Season 1: Coastal Tides', description: 'Coral reefs, alpine summits, and coastal shorelines.', created_at: SEED_SERIES[3].created_at },
+  { id: 'seas-5', series_id: 'ser-5', season_number: 1, title: 'Season 1: Puppy Joy & Forest Tales', description: 'Golden puppies, beach fetch, and woodland adventures.', created_at: SEED_SERIES[4].created_at }
 ];
 
 // Verified, Royalty-Free CC0, Creator-Licensed Media Catalog
@@ -93,7 +93,7 @@ export interface MatchedMedia {
 export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/docs/walking.mp4',
-    thumbnail_url: '/images/shibuya_rain_night.jpg',
+    thumbnail_url: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/lofi.mp3',
     title: 'Tokyo Midnight: Shibuya Rain',
     desc: 'Neon signs shimmering through rainy midnight crosswalks in Shibuya, capturing the quiet pulse of Tokyo.',
@@ -102,7 +102,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/fog.mp4',
-    thumbnail_url: '/images/minimal_coding_setup.jpg',
+    thumbnail_url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/lofi2.mp3',
     title: 'The Craft of Clean Code',
     desc: 'Inside the late-night workstation of a software artisan crafting elegant algorithms under warm task lighting.',
@@ -111,7 +111,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/airplane.mp4',
-    thumbnail_url: '/images/generative_mesh_art.jpg',
+    thumbnail_url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track5_action.mp3',
     title: 'Digital Canvas: Generative Geometry',
     desc: 'Algorithmic 3D wireframes and neon light pulses morphing seamlessly in an infinite computational space.',
@@ -120,7 +120,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/kitten_fighting.mp4',
-    thumbnail_url: '/images/puppies_autumn.jpg',
+    thumbnail_url: 'https://images.unsplash.com/photo-1591160690555-5debfba289f0?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track4_playful.mp3',
     title: 'Golden Autumn: Joyful Puppy Paws',
     desc: 'Two adorable golden retriever puppies romping through a carpet of golden autumn leaves on a sunny afternoon.',
@@ -129,7 +129,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/horses.mp4',
-    thumbnail_url: '/images/savanna_migration.jpg',
+    thumbnail_url: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track7_savanna.mp3',
     title: 'Savanna Cycles: The Great Migration',
     desc: 'Wildebeest and zebra herds brave rushing river crossings in the timeless annual migration across the Serengeti.',
@@ -138,7 +138,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/snow_horses.mp4',
-    thumbnail_url: '/images/savanna_cheetah.jpg',
+    thumbnail_url: 'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track7_savanna.mp3',
     title: 'Dawn Patrol: The Cheetah Watch',
     desc: 'A sleek cheetah prowls silently through sunlit golden grasses with razor-sharp predatory focus.',
@@ -147,7 +147,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/cat.mp4',
-    thumbnail_url: '/images/savanna_waterhole.jpg',
+    thumbnail_url: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track8_upbeat.mp3',
     title: 'Midday Sanctuary: The Waterhole Truce',
     desc: 'A serene gathering of giraffes, zebras, and birds sharing precious water under the scorching afternoon sun.',
@@ -156,7 +156,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/eagle.mp4',
-    thumbnail_url: '/images/savanna_lion_night.jpg',
+    thumbnail_url: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/ambient.mp3',
     title: 'Night on the Grasslands: Celestial Pride',
     desc: 'A nocturnal study of a lion pride resting under the glowing star-studded arch of the Milky Way.',
@@ -165,8 +165,8 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/dog.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&h=250&q=80',
-    audio_url: '/audio/track8_upbeat.mp3',
+    thumbnail_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&h=400&q=80',
+    audio_url: '/audio/track4_playful.mp3',
     title: 'Golden Paws: Ocean Beach Fetch',
     desc: 'A joyful retriever dog dashing along the sunny shore and catching frisbees in pure exhilaration.',
     genre: 'Comedy',
@@ -174,7 +174,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/sea_turtle.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&h=250&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track6_tranquil.mp3',
     title: 'Pacific Drifter: The Coral Sanctuary',
     desc: 'A majestic green sea turtle glides effortlessly through sunlit azure coastal currents and protected coral sanctuaries.',
@@ -183,7 +183,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/elephants.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=400&h=250&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track7_savanna.mp3',
     title: 'Gentle Giants: Savanna Herd Migration',
     desc: 'An elephant matriarch leads her family across the vast golden plains under ancient baobab trees.',
@@ -192,7 +192,7 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/rafting.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=400&h=250&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track5_action.mp3',
     title: 'Whitewater Surge: Canyon Rapids',
     desc: 'A high-stakes river rafting crew battles roaring Category 5 white-water rapids through a steep volcanic gorge.',
@@ -201,16 +201,43 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/finish_line.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=400&h=250&q=80',
-    audio_url: '/audio/lofi2.mp3',
+    thumbnail_url: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=600&h=400&q=80',
+    audio_url: '/audio/track8_upbeat.mp3',
     title: 'The Final 100 Meters: Finish Line Glory',
     desc: 'An endurance runner summons the last burst of willpower to outpace the chasing pack and break the championship ribbon.',
     genre: 'Action',
     tags: ['action', 'running', 'marathon', 'athlete', 'triumph']
   },
   {
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/skate.mp4',
+    thumbnail_url: 'https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?auto=format&fit=crop&w=600&h=400&q=80',
+    audio_url: '/audio/track5_action.mp3',
+    title: 'Urban Flow: Street Skateboard Rhythm',
+    desc: 'An agile street skater carves through urban architectural plazas with fluid, synchronized kinetic grace.',
+    genre: 'Action',
+    tags: ['action', 'skate', 'urban', 'flow', 'street']
+  },
+  {
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/sea_waves.mp4',
+    thumbnail_url: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=600&h=400&q=80',
+    audio_url: '/audio/track6_tranquil.mp3',
+    title: 'Turquoise Swell: Ocean Wave Break',
+    desc: 'Pristine emerald swells rolling in from the deep Pacific, curling into crystalline barrels at golden sunset.',
+    genre: 'Nature',
+    tags: ['nature', 'waves', 'ocean', 'swell', 'surf']
+  },
+  {
+    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/mountains.mp4',
+    thumbnail_url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&h=400&q=80',
+    audio_url: '/audio/ambient.mp3',
+    title: 'Alpine Majesty: High Mountain Summit',
+    desc: 'Glaciated mountain crags piercing through an ocean of morning alpine clouds in breathtaking vertical scale.',
+    genre: 'Nature',
+    tags: ['nature', 'mountains', 'alpine', 'summit', 'peaks']
+  },
+  {
     video_url: '/videos/cloudy-sky.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=400&h=250&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/ambient.mp3',
     title: 'Skyward Whispers: High Altitude Clouds',
     desc: 'A hypnotic vertical time-lapse of golden sunset cumulus clouds drifting across high mountain peaks.',
@@ -219,652 +246,101 @@ export const MATCHED_MEDIA_CATALOG: MatchedMedia[] = [
   },
   {
     video_url: '/coverr-test.mp4',
-    thumbnail_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&h=250&q=80',
+    thumbnail_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track6_tranquil.mp3',
     title: 'Coastal Solitude: Ocean Shoreline',
     desc: 'Crystalline turquoise ocean waves rolling continuously over golden beach sands in unhurried, rhythmic beauty.',
     genre: 'Devotional',
     tags: ['devotional', 'ocean', 'waves', 'beach', 'sanctuary']
-  }
-];
-
-const SEED_VIDEOS: Video[] = [];
-const SEED_EPISODES: Episode[] = [];
-
-// 1. Generate 22 videos mapped directly to our 5 series episodes
-const seriesConfigs = [
-  {
-    seriesId: 'ser-1',
-    seasonId: 'seas-1',
-    creator: 'usr-ai',
-    title: 'SAVANNA SURVIVAL',
-    lang: 'en',
-    genre: 'Animals',
-    episodes: [
-      { num: 1, catalogIdx: 4, title: 'The Great Migration', desc: 'Wildebeest and zebra herds brave rushing river crossings in the timeless annual migration across the Serengeti.' },
-      { num: 2, catalogIdx: 5, title: 'Predators at Dawn: The Cheetah Watch', desc: 'A sleek cheetah prowls silently through sunlit golden grasses with razor-sharp predatory focus.' },
-      { num: 3, catalogIdx: 6, title: 'Midday Sanctuary: The Waterhole Truce', desc: 'A serene gathering of giraffes, zebras, and birds sharing precious water under the scorching afternoon sun.' },
-      { num: 4, catalogIdx: 7, title: 'Night on the Grasslands: Celestial Pride', desc: 'A nocturnal study of a lion pride resting under the glowing star-studded arch of the Milky Way.' },
-      { num: 5, catalogIdx: 10, title: 'Gentle Giants: Savanna Herd Migration', desc: 'An elephant matriarch leads her family across the vast golden plains under ancient baobab trees.' }
-    ]
   },
   {
-    seriesId: 'ser-2',
-    seasonId: 'seas-2',
-    creator: 'usr-2',
-    title: 'THE CREATIVE MIND & CODE',
-    lang: 'en',
-    genre: 'Documentary',
-    episodes: [
-      { num: 1, catalogIdx: 1, title: 'The Craft of Clean Code', desc: 'Inside the late-night workstation of a software artisan crafting elegant algorithms under warm task lighting.' },
-      { num: 2, catalogIdx: 0, title: 'Tokyo Blue Hour: Shibuya Rain', desc: 'Neon signs shimmering through rainy midnight crosswalks in Shibuya, capturing the quiet pulse of Tokyo.' },
-      { num: 3, catalogIdx: 2, title: 'Digital Canvas: Generative Geometry', desc: 'Algorithmic 3D wireframes and neon light pulses morphing seamlessly in an infinite computational space.' }
-    ]
-  },
-  {
-    seriesId: 'ser-3',
-    seasonId: 'seas-3',
-    creator: 'usr-10',
-    title: 'WILD EXPEDITIONS',
-    lang: 'en',
-    genre: 'Action',
-    episodes: [
-      { num: 1, catalogIdx: 11, title: 'Whitewater Surge: Canyon Rapids', desc: 'A high-stakes river rafting crew battles roaring Category 5 white-water rapids through a steep volcanic gorge.' },
-      { num: 2, catalogIdx: 12, title: 'The Final 100 Meters: Finish Line Glory', desc: 'An endurance runner summons the last burst of willpower to outpace the chasing pack and break the championship ribbon.' },
-      { num: 3, catalogIdx: 8, title: 'Golden Paws: Ocean Beach Fetch', desc: 'A joyful retriever dog dashing along the sunny shore and catching frisbees in pure exhilaration.' }
-    ]
-  },
-  {
-    seriesId: 'ser-4',
-    seasonId: 'seas-4',
-    creator: 'usr-4',
-    title: 'OCEAN & NATURE SANCTUARIES',
-    lang: 'en',
-    genre: 'Nature',
-    episodes: [
-      { num: 1, catalogIdx: 9, title: 'Pacific Drifter: The Coral Sanctuary', desc: 'A majestic green sea turtle glides effortlessly through sunlit azure coastal currents and protected coral sanctuaries.' },
-      { num: 2, catalogIdx: 14, title: 'Coastal Solitude: Ocean Shoreline', desc: 'Crystalline turquoise ocean waves rolling continuously over golden beach sands in unhurried, rhythmic beauty.' },
-      { num: 3, catalogIdx: 13, title: 'Skyward Whispers: High Altitude Clouds', desc: 'A hypnotic vertical time-lapse of golden sunset cumulus clouds drifting across high mountain peaks.' }
-    ]
-  },
-  {
-    seriesId: 'ser-5',
-    seasonId: 'seas-5',
-    creator: 'usr-6',
-    title: 'PLAYFUL PAWS',
-    lang: 'en',
-    genre: 'Comedy',
-    episodes: [
-      { num: 1, catalogIdx: 3, title: 'Golden Autumn: Joyful Puppy Paws', desc: 'Two adorable golden retriever puppies romping through a carpet of golden autumn leaves on a sunny afternoon.' },
-      { num: 2, catalogIdx: 8, title: 'Golden Paws: Ocean Beach Fetch', desc: 'A joyful retriever dog dashing along the sunny shore and catching frisbees in pure exhilaration.' }
-    ]
-  }
-];
-
-let vidIdCounter = 1;
-seriesConfigs.forEach((cfg) => {
-  cfg.episodes.forEach((ep) => {
-    const vidId = `vid-ser-${cfg.seriesId.replace('ser-', '')}-ep-${ep.num}`;
-    const matched = MATCHED_MEDIA_CATALOG[ep.catalogIdx];
-    const url = matched.video_url;
-    const audioUrl = matched.audio_url;
-    const thumbUrl = matched.thumbnail_url;
-
-    const videoRecord: Video = {
-      id: vidId,
-      creator_id: cfg.creator,
-      title: `${cfg.title} - S1:E${ep.num} (${ep.title})`,
-      description: ep.desc,
-      video_url: url,
-      audio_url: audioUrl,
-      thumbnail_url: thumbUrl,
-      content_type: 'episode',
-      language: cfg.lang,
-      genre: cfg.genre,
-      duration_seconds: 50 + ep.num * 10,
-      visibility: 'public',
-      status: 'published',
-      rights_type: 'creator_licensed',
-      rights_confirmed: true,
-      ai_summary: `AI Analysis: Highly engaging episode of ${cfg.title}. Neural spike analytics indicate peak retention at climax.`,
-      ai_tags: [cfg.genre.toLowerCase(), ...matched.tags, 'series', 'episode'],
-      view_count: 50000 + vidIdCounter * 12000,
-      like_count: 4500 + vidIdCounter * 1500,
-      comment_count: 240 + vidIdCounter * 45,
-      share_count: 1200 + vidIdCounter * 350,
-      created_at: new Date(Date.now() - (15 - ep.num) * 24 * 3600000).toISOString(),
-      updated_at: new Date().toISOString(),
-      published_at: new Date(Date.now() - (15 - ep.num) * 24 * 3600000).toISOString()
-    };
-    
-    SEED_VIDEOS.push(videoRecord);
-
-    SEED_EPISODES.push({
-      id: `ep-${cfg.seriesId.replace('ser-', '')}-${ep.num}`,
-      season_id: cfg.seasonId,
-      video_id: vidId,
-      episode_number: ep.num,
-      title: ep.title,
-      created_at: videoRecord.created_at
-    });
-
-    vidIdCounter++;
-  });
-});
-
-// 2. Generate 15 independent vertical shorts (Strictly matched 1:1 with media catalog)
-const shortCreators = [
-  { id: 'usr-2', catalogIdx: 0, title: 'Tokyo Rain Alley Reflection', desc: 'A soothing nighttime study of rain droplets and Shibuya neon reflections on wet asphalt.' },
-  { id: 'usr-4', catalogIdx: 1, title: 'Deep Work Terminal Setup', desc: 'Late-night focus compilation on a customized split mechanical keyboard in ambient warmth.' },
-  { id: 'usr-5', catalogIdx: 2, title: 'Neon Vector Morphing', desc: 'Generative algorithm visual study projecting procedural wireframes into infinite 3D depth.' },
-  { id: 'usr-6', catalogIdx: 3, title: 'Autumn Leaves Puppy Play', desc: 'Two golden retriever brothers romping through golden autumn leaves in pure joyful celebration.' },
-  { id: 'usr-7', catalogIdx: 4, title: 'River Crossing Savanna Migration', desc: 'Over a million wildebeest braving swirling river waters during the annual migration across the Serengeti.' },
-  { id: 'usr-3', catalogIdx: 5, title: 'Cheetah Golden Hour Prowl', desc: 'A silent African cheetah scanning the sunlit dry grasslands with razor-sharp predatory patience.' },
-  { id: 'usr-8', catalogIdx: 6, title: 'Waterhole Oasis Peace', desc: 'Wild animals gathering under the midday heat for a peaceful water sanctuary truce.' },
-  { id: 'usr-1', catalogIdx: 7, title: 'Starry Savanna Lion Watch', desc: 'The lion pride rests quietly under the glittering arch of the Milky Way galaxy.' },
-  { id: 'usr-5', catalogIdx: 8, title: 'Golden Paws: Beach Frisbee Dash', desc: 'A joyful retriever dog racing along the sunny shoreline and leaping for frisbees.' },
-  { id: 'usr-4', catalogIdx: 9, title: 'Pacific Sea Turtle Coral Drift', desc: 'A green sea turtle glides weightlessly through sunlit azure coastal waters and coral gardens.' },
-  { id: 'usr-2', catalogIdx: 10, title: 'Elephant Family Savanna March', desc: 'An elephant matriarch leads her family across the vast golden plains under ancient baobab trees.' },
-  { id: 'usr-9', catalogIdx: 11, title: 'Canyon Whitewater Surge', desc: 'An extreme river rafting expedition plunging through thundering Category 5 river rapids.' },
-  { id: 'usr-10', catalogIdx: 12, title: 'Marathon Triumph: Final Sprint', desc: 'An athlete summons their final reservoir of willpower to break the championship finish line.' },
-  { id: 'usr-4', catalogIdx: 13, title: 'High Altitude Cloud Drift', desc: 'A mesmerizing vertical time-lapse of golden sunset cumulus clouds over alpine peaks.' },
-  { id: 'usr-9', catalogIdx: 14, title: 'Pacific Shoreline Sunrise Waves', desc: 'Crystalline turquoise waves roll rhythmically over untouched golden sands at dawn.' }
-];
-
-shortCreators.forEach((cfg, idx) => {
-  const vidId = `vid-short-${idx + 1}`;
-  const matched = MATCHED_MEDIA_CATALOG[cfg.catalogIdx];
-  
-  SEED_VIDEOS.push({
-    id: vidId,
-    creator_id: cfg.id,
-    title: cfg.title,
-    description: cfg.desc,
-    video_url: matched.video_url,
-    audio_url: matched.audio_url,
-    thumbnail_url: matched.thumbnail_url,
-    content_type: 'short',
-    language: 'en',
-    genre: matched.genre,
-    duration_seconds: 25 + idx * 5,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: `AI generated synopsis: A high-retention short film featuring ${cfg.title}. Matched audio and visual score.`,
-    ai_tags: [...matched.tags, 'short', 'viral'],
-    view_count: 85000 + idx * 24000,
-    like_count: 9400 + idx * 3100,
-    comment_count: 650 + idx * 120,
-    share_count: 1400 + idx * 450,
-    created_at: new Date(Date.now() - (7 - idx * 0.5) * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - (7 - idx * 0.5) * 24 * 3600000).toISOString()
-  });
-});
-
-// 3. Generate 15 highly viral trending shorts/videos (Strictly matched 1:1 with media catalog)
-const viralCreators = [
-  { id: 'usr-2', catalogIdx: 1, title: 'Clean Code: Minimal Workspace', desc: 'Inside the ultra-clean developer setup with focused warm task lighting and ambient beats.', views: 2400000, likes: 620000, shares: 140000, comments: 24000 },
-  { id: 'usr-4', catalogIdx: 0, title: 'Tokyo Rain: Midnight Crosswalks', desc: 'High-framerate study of neon signs reflecting in Shibuya midnight street rain.', views: 3100000, likes: 830000, shares: 250000, comments: 45000 },
-  { id: 'usr-7', catalogIdx: 2, title: 'Algorithmic 3D Wireframes', desc: 'Procedural mathematical models animated with glowing neon coordinate meshes.', views: 1800000, likes: 450000, shares: 89000, comments: 18000 },
-  { id: 'usr-8', catalogIdx: 3, title: 'Puppy Autumn Celebration', desc: 'Two golden retriever pups tumbling through autumn leaves in pure joyful energy.', views: 2900000, likes: 780000, shares: 190000, comments: 31000 },
-  { id: 'usr-5', catalogIdx: 8, title: 'Golden Retriever Ocean Beach Run', desc: 'A cheerful dog sprinting through the sea spray and enjoying pure coastal freedom.', views: 4200000, likes: 1100000, shares: 480000, comments: 85000 },
-  { id: 'usr-3', catalogIdx: 9, title: 'Pacific Sea Turtle Coral Sanctuary', desc: 'Peaceful underwater journey beside a green sea turtle in tropical waters.', views: 1600000, likes: 320000, shares: 75000, comments: 12000 },
-  { id: 'usr-6', catalogIdx: 10, title: 'Gentle Savanna Giants Herd', desc: 'Elephant family traversing the wide open Serengeti landscape at golden hour.', views: 3400000, likes: 910000, shares: 280000, comments: 92000 },
-  { id: 'usr-1', catalogIdx: 11, title: 'Category 5 Whitewater Rapids', desc: 'Adrenaline-packed canyon rafting crew conquering turbulent white water cascades.', views: 5100000, likes: 1400000, shares: 680000, comments: 140000 },
-  { id: 'usr-2', catalogIdx: 12, title: 'Championship Marathon Finish Line', desc: 'Endurance runner pushing past the limit to claim victory at the finish line.', views: 1200000, likes: 340000, shares: 98000, comments: 12000 },
-  { id: 'usr-4', catalogIdx: 13, title: 'Sunset Cloud Time-Lapse', desc: 'Golden clouds drifting across mountain peaks in breathtaking vertical cinematic framing.', views: 2000000, likes: 580000, shares: 140000, comments: 20000 },
-  { id: 'usr-10', catalogIdx: 14, title: 'Morning Pacific Shoreline Tide', desc: 'Soothing turquoise ocean waves washing over warm sands in peaceful meditation.', views: 1500000, likes: 420000, shares: 120000, comments: 15000 },
-  { id: 'usr-9', catalogIdx: 4, title: 'Serengeti Great Migration Crossing', desc: 'Vast herds braving rushing river currents in the great savanna migration cycle.', views: 2700000, likes: 810000, shares: 240000, comments: 27000 },
-  { id: 'usr-6', catalogIdx: 5, title: 'Dawn Patrol Cheetah Hunting Watch', desc: 'Cheetah silently navigating the golden grasslands in the first light of dawn.', views: 1100000, likes: 320000, shares: 85000, comments: 11000 },
-  { id: 'usr-7', catalogIdx: 6, title: 'Savanna Waterhole Oasis Sanctuary', desc: 'Animals of all species sharing precious water under a scorching afternoon sun.', views: 1900000, likes: 470000, shares: 190000, comments: 19000 },
-  { id: 'usr-1', catalogIdx: 7, title: 'Under the Milky Way: Lion Pride', desc: 'Nocturnal lion pride resting calmly under a dazzling starry sky on the grasslands.', views: 3500000, likes: 980000, shares: 320000, comments: 35000 }
-];
-
-viralCreators.forEach((cfg, idx) => {
-  const vidId = `vid-viral-${idx + 1}`;
-  const matched = MATCHED_MEDIA_CATALOG[cfg.catalogIdx];
-  
-  SEED_VIDEOS.push({
-    id: vidId,
-    creator_id: cfg.id,
-    title: cfg.title,
-    description: cfg.desc,
-    video_url: matched.video_url,
-    audio_url: matched.audio_url,
-    thumbnail_url: matched.thumbnail_url,
-    content_type: 'short',
-    language: 'en',
-    genre: matched.genre,
-    duration_seconds: 20 + idx * 4,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: `AI generated synopsis: Highly engaging viral trend log for ${cfg.title}. Matched audio and visual score.`,
-    ai_tags: [...matched.tags, 'viral', 'trending', 'shorts', 'explore'],
-    view_count: cfg.views,
-    like_count: cfg.likes,
-    comment_count: cfg.comments,
-    share_count: cfg.shares,
-    created_at: new Date(Date.now() - (3 - idx * 0.2) * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - (3 - idx * 0.2) * 24 * 3600000).toISOString()
-  });
-});
- 
-// 4. Generate 3 AI-synthesized vertical videos
-const aiVideos = [
-  {
-    id: 'vid-ai-1',
-    creator_id: 'usr-ai',
-    title: 'SHIBUYA SOUL',
-    description: 'A vertical cyberpunk visual study of rain reflections, neon signs, and urban walking in 2:00 AM Shibuya, Tokyo.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/docs/walking.mp4',
-    thumbnail_url: '/images/shibuya_rain_night.jpg',
-    audio_url: '/audio/lofi.mp3',
-    genre: 'Sci-Fi',
-    tags: ['ai', 'cyberpunk', 'tokyo', 'neon', 'cinematic'],
-    views: 4800000,
-    likes: 1200000,
-    comments: 98000
-  },
-  {
-    id: 'vid-ai-2',
-    creator_id: 'usr-ai',
-    title: 'THE SYNAPSE CAFE',
-    description: 'A cozy, hyper-minimalist atmospheric loop. Misty mountain fog drifting slowly under warm amber ambient tones.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/fog.mp4',
-    thumbnail_url: '/images/minimal_coding_setup.jpg',
-    audio_url: '/audio/lofi2.mp3',
-    genre: 'Tech',
-    tags: ['ai', 'minimalism', 'workspace', 'coding', 'asmr'],
-    views: 3100000,
-    likes: 950000,
-    comments: 42000
-  },
-  {
-    id: 'vid-ai-3',
-    creator_id: 'usr-ai',
-    title: 'ALGORITHMIC CANVAS',
-    description: 'A study of high-altitude flight soaring through digital skies and cloud layers above the earth.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/airplane.mp4',
-    thumbnail_url: '/images/generative_mesh_art.jpg',
-    audio_url: '/audio/track5_action.mp3',
-    genre: 'Art',
-    tags: ['ai', 'generative', 'art', 'vectors', 'abstract'],
-    views: 5200000,
-    likes: 1600000,
-    comments: 110000
-  }
-];
-
-aiVideos.forEach((v) => {
-  SEED_VIDEOS.push({
-    id: v.id,
-    creator_id: v.creator_id,
-    title: v.title,
-    description: v.description,
-    video_url: v.video_url,
-    audio_url: v.audio_url,
-    thumbnail_url: v.thumbnail_url || v.video_url,
-    content_type: 'short',
-    language: 'en',
-    genre: v.genre,
-    duration_seconds: 15,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: `AI generated synopsis: Fully synthesized AI-art asset. Neural retention tracking models show peak focus levels on visual transitions.`,
-    ai_tags: v.tags,
-    view_count: v.views,
-    like_count: v.likes,
-    comment_count: Math.floor(v.comments / 100),
-    share_count: Math.floor(v.likes / 10),
-    created_at: new Date(Date.now() - 5 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 5 * 24 * 3600000).toISOString()
-  });
-});
-
-// 5. Open Drama Platform - Core Segment Flagship 5-Minute Shorts (Love, Action, Comedy, Devotional, Nature, Animals)
-// Strictly matched: video stream, verified photography/artwork thumbnail, and genre audio score
-const openDramaSegmentVideos: Video[] = [
-  {
-    id: 'vid-drama-love-1',
-    creator_id: 'usr-1',
-    title: 'Tokyo Midnight: Shibuya Rain',
-    description: 'Two souls cross paths under umbrellas in the neon glow of midnight Shibuya as rainy reflections dance across the asphalt.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/docs/walking.mp4',
-    audio_url: '/audio/track6_tranquil.mp3',
-    thumbnail_url: '/images/shibuya_rain_night.jpg',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Love',
-    duration_seconds: 225,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'An emotional romance short exploring unexpected meetings in midnight rain.',
-    ai_tags: ['love', 'romance', 'tokyo', 'shibuya', 'rain', '5min-short'],
-    view_count: 320000,
-    like_count: 87000,
-    comment_count: 4200,
-    share_count: 14500,
-    created_at: new Date(Date.now() - 2 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 2 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-love-2',
-    creator_id: 'usr-5',
-    title: 'Golden Hour Rendezvous',
-    description: 'Sunset reflections and drifting mountain clouds create a breathtaking atmosphere as two hearts meet at the high mountain summit.',
-    video_url: '/videos/cloudy-sky.mp4',
-    audio_url: '/audio/ambient.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=400&h=250&q=80',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Love',
-    duration_seconds: 250,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'A heartwarming romance short about unexpected connections above the clouds.',
-    ai_tags: ['love', 'romance', 'sunset', 'clouds', 'cozy', '5min-short'],
-    view_count: 280000,
-    like_count: 72000,
-    comment_count: 3100,
-    share_count: 9800,
-    created_at: new Date(Date.now() - 3 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 3 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-action-1',
-    creator_id: 'usr-10',
-    title: 'Whitewater Surge: Canyon Rapids',
-    description: 'A high-stakes river rafting crew battles roaring Category 5 white-water rapids through a steep volcanic gorge.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/rafting.mp4',
-    audio_url: '/audio/track5_action.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=400&h=250&q=80',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Action',
-    duration_seconds: 295,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'A heart-pounding 5-minute tactical whitewater rapids expedition with high retention action.',
-    ai_tags: ['action', 'rafting', 'thriller', 'adventure', 'extreme', '5min-short'],
-    view_count: 490000,
-    like_count: 135000,
-    comment_count: 6700,
-    share_count: 28000,
-    created_at: new Date(Date.now() - 1.5 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 1.5 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-action-2',
-    creator_id: 'usr-2',
-    title: 'The Final 100 Meters: Finish Line Glory',
-    description: 'An endurance runner summons the last burst of willpower to outpace the chasing pack and break the championship ribbon.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/finish_line.mp4',
-    audio_url: '/audio/track8_upbeat.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=400&h=250&q=80',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Action',
-    duration_seconds: 210,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'A fast-paced marathon triumph with inspiring athletic cinematography.',
-    ai_tags: ['action', 'running', 'marathon', 'triumph', 'sprint'],
-    view_count: 360000,
-    like_count: 94000,
-    comment_count: 4900,
-    share_count: 17200,
-    created_at: new Date(Date.now() - 4 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 4 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-comedy-1',
-    creator_id: 'usr-6',
-    title: 'Autumn Antics: Puppy Playtime',
-    description: 'Two golden retriever puppies discover a giant pile of dry autumn leaves and turn a peaceful park afternoon into pure joyful chaos.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/kitten_fighting.mp4',
+    video_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    thumbnail_url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&h=400&q=80',
     audio_url: '/audio/track4_playful.mp3',
-    thumbnail_url: '/images/puppies_autumn.jpg',
-    content_type: 'short',
-    language: 'en',
+    title: 'Forest Tale: Playful Woodland Bunny',
+    desc: 'A whimsical animated woodland tale following a curious rabbit exploring enchanted sunny forest glades.',
     genre: 'Comedy',
-    duration_seconds: 255,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'A hilarious, heartwarming short featuring playful puppy antics in golden fall leaves.',
-    ai_tags: ['comedy', 'puppies', 'cute', 'hilarious', 'autumn', '5min-short'],
-    view_count: 430000,
-    like_count: 112000,
-    comment_count: 8900,
-    share_count: 34000,
-    created_at: new Date(Date.now() - 1 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 1 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-comedy-2',
-    creator_id: 'usr-9',
-    title: 'Generative Art Gone Rogue',
-    description: 'A digital artist sets algorithm parameters to auto-generate a fruit bowl, but the AI starts spinning neon hyper-dimensional geometric lattices instead.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/cat.mp4',
-    audio_url: '/audio/track8_upbeat.mp3',
-    thumbnail_url: '/images/generative_mesh_art.jpg',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Comedy',
-    duration_seconds: 200,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'A meme-worthy sketch exploring generative AI and computational geometry.',
-    ai_tags: ['comedy', 'ai', 'generative', 'creative', 'meme', 'sketch'],
-    view_count: 390000,
-    like_count: 104000,
-    comment_count: 7300,
-    share_count: 29500,
-    created_at: new Date(Date.now() - 2.5 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 2.5 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-devo-1',
-    creator_id: 'usr-8',
-    title: 'Skyward Whispers: High Altitude Clouds',
-    description: 'A hypnotic vertical time-lapse of golden sunset cumulus clouds drifting across high mountain peaks, set to sacred acoustic chords.',
-    video_url: '/videos/cloudy-sky.mp4',
-    audio_url: '/audio/track6_tranquil.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=400&h=250&q=80',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Devotional',
-    duration_seconds: 210,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'Serene sunrise meditation ritual with acoustic ambient overtones.',
-    ai_tags: ['devotional', 'spiritual', 'sacred', 'clouds', 'sky', 'peace'],
-    view_count: 510000,
-    like_count: 142000,
-    comment_count: 9800,
-    share_count: 38000,
-    created_at: new Date(Date.now() - 1.2 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 1.2 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-devo-2',
-    creator_id: 'usr-7',
-    title: 'Sacred Waters: Coastal Solitude',
-    description: 'Golden sunrise rays breaking across sacred coastal tide waters as crystalline waves wash over untouched sands in morning reflection.',
-    video_url: '/coverr-test.mp4',
-    audio_url: '/audio/ambient.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&h=250&q=80',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Devotional',
-    duration_seconds: 285,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'Mesmerizing coastal reflection ritual reflecting light on sacred ocean waves.',
-    ai_tags: ['devotional', 'ocean', 'waves', 'spiritual', 'sacred', 'lights'],
-    view_count: 460000,
-    like_count: 128000,
-    comment_count: 8400,
-    share_count: 31000,
-    created_at: new Date(Date.now() - 2.8 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 2.8 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-nature-1',
-    creator_id: 'usr-4',
-    title: 'Pacific Drifter: The Coral Sanctuary',
-    description: 'A majestic green sea turtle glides effortlessly through sunlit azure coastal currents and protected coral sanctuaries.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/sea_turtle.mp4',
-    audio_url: '/audio/ambient.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&h=250&q=80',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Nature',
-    duration_seconds: 220,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'Majestic vertical journey through coral reefs with a gliding Pacific sea turtle.',
-    ai_tags: ['nature', 'ocean', 'turtle', 'coral', 'tranquil'],
-    view_count: 580000,
-    like_count: 165000,
-    comment_count: 11200,
-    share_count: 42000,
-    created_at: new Date(Date.now() - 3.2 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 3.2 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-nature-2',
-    creator_id: 'usr-1',
-    title: 'Coastal Solitude: Ocean Tides',
-    description: 'Crystalline turquoise ocean waves rolling continuously over golden beach sands in unhurried, rhythmic beauty.',
-    video_url: '/coverr-test.mp4',
-    audio_url: '/audio/ambient.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&h=250&q=80',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Nature',
-    duration_seconds: 260,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'Slow-motion pristine ocean waves descending across golden coastal beaches.',
-    ai_tags: ['nature', 'beach', 'waves', 'ocean', 'peace'],
-    view_count: 420000,
-    like_count: 118000,
-    comment_count: 7900,
-    share_count: 26000,
-    created_at: new Date(Date.now() - 1.8 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 1.8 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-anim-1',
-    creator_id: 'usr-3',
-    title: 'Golden Paws: Ocean Beach Fetch',
-    description: 'A joyful golden retriever dashes along the sunny shoreline in high spirits, chasing frisbees and leaping through sea spray.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/dog.mp4',
-    audio_url: '/audio/track4_playful.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&h=250&q=80',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Animals',
-    duration_seconds: 245,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'Heartwarming, joyful pet cinematography of a playful retriever at the beach.',
-    ai_tags: ['animals', 'dog', 'golden', 'beach', 'fetch', 'playful'],
-    view_count: 610000,
-    like_count: 178000,
-    comment_count: 13500,
-    share_count: 51000,
-    created_at: new Date(Date.now() - 2.1 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 2.1 * 24 * 3600000).toISOString()
-  },
-  {
-    id: 'vid-drama-anim-2',
-    creator_id: 'usr-10',
-    title: 'Savanna Giants: The Elephant Herd',
-    description: 'An elephant family traverses the golden African savanna under baobab trees, moving together in ancient familial harmony.',
-    video_url: 'https://res.cloudinary.com/demo/video/upload/c_fill,h_640,w_360/elephants.mp4',
-    audio_url: '/audio/track7_savanna.mp3',
-    thumbnail_url: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=400&h=250&q=80',
-    content_type: 'short',
-    language: 'en',
-    genre: 'Animals',
-    duration_seconds: 270,
-    visibility: 'public',
-    status: 'published',
-    rights_type: 'creator_licensed',
-    rights_confirmed: true,
-    ai_summary: 'Mesmerizing savanna wildlife cinematography capturing familial elephant communication.',
-    ai_tags: ['animals', 'elephants', 'savanna', 'wildlife', 'africa'],
-    view_count: 530000,
-    like_count: 154000,
-    comment_count: 10400,
-    share_count: 39000,
-    created_at: new Date(Date.now() - 1.6 * 24 * 3600000).toISOString(),
-    updated_at: new Date().toISOString(),
-    published_at: new Date(Date.now() - 1.6 * 24 * 3600000).toISOString()
+    tags: ['comedy', 'animation', 'forest', 'bunny', 'family']
   }
 ];
 
-openDramaSegmentVideos.forEach(v => SEED_VIDEOS.push(v));
+// EXACTLY 19 UNIQUE VIDEOS, MAPPED 1:1 TO THE CATALOG - NO DUPLICATES
+const SEED_VIDEOS: Video[] = MATCHED_MEDIA_CATALOG.map((m, idx) => ({
+  id: `vid-${idx + 1}`,
+  creator_id: SEED_PROFILES[idx % 10].id,
+  title: m.title,
+  description: m.desc,
+  video_url: m.video_url,
+  audio_url: m.audio_url,
+  thumbnail_url: m.thumbnail_url,
+  content_type: idx < 14 ? 'episode' : 'short',
+  language: 'en',
+  genre: m.genre,
+  duration_seconds: 35 + (idx % 6) * 10,
+  visibility: 'public',
+  status: 'published',
+  rights_type: 'creator_licensed',
+  rights_confirmed: true,
+  ai_summary: `AI Analysis: ${m.title}. High-retention cinematic segment with precision synchronized audio score.`,
+  ai_tags: [...m.tags, 'featured'],
+  view_count: 95000 + (idx + 1) * 38000,
+  like_count: 14000 + (idx + 1) * 6200,
+  comment_count: 450 + (idx + 1) * 180,
+  share_count: 1200 + (idx + 1) * 350,
+  created_at: new Date(Date.now() - (20 - idx) * 24 * 3600000).toISOString(),
+  updated_at: new Date().toISOString(),
+  published_at: new Date(Date.now() - (20 - idx) * 24 * 3600000).toISOString()
+}));
+
+// MAP 19 UNIQUE EPISODES 1:1 TO THE 5 SERIES - ZERO DUPLICATION
+const SEED_EPISODES: Episode[] = [
+  // ser-1: Savanna Survival (4 episodes: vids 5, 6, 7, 8)
+  { id: 'ep-sav-1', season_id: 'seas-1', video_id: 'vid-5', episode_number: 1, title: 'The Great Migration', created_at: SEED_VIDEOS[4].created_at },
+  { id: 'ep-sav-2', season_id: 'seas-1', video_id: 'vid-6', episode_number: 2, title: 'The Cheetah Watch', created_at: SEED_VIDEOS[5].created_at },
+  { id: 'ep-sav-3', season_id: 'seas-1', video_id: 'vid-7', episode_number: 3, title: 'The Waterhole Truce', created_at: SEED_VIDEOS[6].created_at },
+  { id: 'ep-sav-4', season_id: 'seas-1', video_id: 'vid-8', episode_number: 4, title: 'Celestial Pride', created_at: SEED_VIDEOS[7].created_at },
+
+  // ser-2: The Creative Mind & Code (3 episodes: vids 1, 2, 3)
+  { id: 'ep-code-1', season_id: 'seas-2', video_id: 'vid-1', episode_number: 1, title: 'Tokyo Midnight Rain', created_at: SEED_VIDEOS[0].created_at },
+  { id: 'ep-code-2', season_id: 'seas-2', video_id: 'vid-2', episode_number: 2, title: 'The Craft of Clean Code', created_at: SEED_VIDEOS[1].created_at },
+  { id: 'ep-code-3', season_id: 'seas-2', video_id: 'vid-3', episode_number: 3, title: 'Digital Canvas: Geometry', created_at: SEED_VIDEOS[2].created_at },
+
+  // ser-3: Wild Expeditions (4 episodes: vids 12, 13, 14, 15)
+  { id: 'ep-wild-1', season_id: 'seas-3', video_id: 'vid-12', episode_number: 1, title: 'Canyon Whitewater Surge', created_at: SEED_VIDEOS[11].created_at },
+  { id: 'ep-wild-2', season_id: 'seas-3', video_id: 'vid-13', episode_number: 2, title: 'Finish Line Glory', created_at: SEED_VIDEOS[12].created_at },
+  { id: 'ep-wild-3', season_id: 'seas-3', video_id: 'vid-14', episode_number: 3, title: 'Street Skateboard Rhythm', created_at: SEED_VIDEOS[13].created_at },
+  { id: 'ep-wild-4', season_id: 'seas-3', video_id: 'vid-15', episode_number: 4, title: 'Ocean Wave Break', created_at: SEED_VIDEOS[14].created_at },
+
+  // ser-4: Ocean & Nature Sanctuaries (4 episodes: vids 10, 11, 16, 17)
+  { id: 'ep-nat-1', season_id: 'seas-4', video_id: 'vid-10', episode_number: 1, title: 'The Coral Sanctuary', created_at: SEED_VIDEOS[9].created_at },
+  { id: 'ep-nat-2', season_id: 'seas-4', video_id: 'vid-11', episode_number: 2, title: 'Savanna Herd Migration', created_at: SEED_VIDEOS[10].created_at },
+  { id: 'ep-nat-3', season_id: 'seas-4', video_id: 'vid-16', episode_number: 3, title: 'Alpine Majesty Summit', created_at: SEED_VIDEOS[15].created_at },
+  { id: 'ep-nat-4', season_id: 'seas-4', video_id: 'vid-17', episode_number: 4, title: 'High Altitude Clouds', created_at: SEED_VIDEOS[16].created_at },
+
+  // ser-5: Playful Companions & Tales (4 episodes: vids 4, 9, 18, 19)
+  { id: 'ep-play-1', season_id: 'seas-5', video_id: 'vid-4', episode_number: 1, title: 'Joyful Puppy Paws', created_at: SEED_VIDEOS[3].created_at },
+  { id: 'ep-play-2', season_id: 'seas-5', video_id: 'vid-9', episode_number: 2, title: 'Ocean Beach Fetch', created_at: SEED_VIDEOS[8].created_at },
+  { id: 'ep-play-3', season_id: 'seas-5', video_id: 'vid-18', episode_number: 3, title: 'Ocean Shoreline Solitude', created_at: SEED_VIDEOS[17].created_at },
+  { id: 'ep-play-4', season_id: 'seas-5', video_id: 'vid-19', episode_number: 4, title: 'Playful Woodland Bunny', created_at: SEED_VIDEOS[18].created_at }
+];
 
 // Seed Comments, Likes, and AI Analysis for videos
 const SEED_COMMENTS: Comment[] = [
   { id: 'com-1', user_id: 'usr-2', video_id: 'vid-1', parent_id: null, body: 'Perfect pacing! The acting in this drama is next level.', status: 'approved', created_at: new Date(Date.now() - 5 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
   { id: 'com-2', user_id: 'usr-1', video_id: 'vid-1', parent_id: 'com-1', body: 'Thank you! Episode 2 drops tomorrow, make sure to follow.', status: 'approved', created_at: new Date(Date.now() - 4.8 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
   { id: 'com-3', user_id: 'usr-3', video_id: 'vid-1', parent_id: null, body: 'Love the cinematic lighting here! Absolute gold standard.', status: 'approved', created_at: new Date(Date.now() - 4 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'com-4', user_id: 'usr-5', video_id: 'vid-short-1', parent_id: null, body: 'Hahaha Rohit bhai, you are too funny. Gossip uncles are the worst! 😂', status: 'approved', created_at: new Date(Date.now() - 3 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
-  { id: 'com-5', user_id: 'usr-7', video_id: 'vid-4', parent_id: null, body: 'Very thrilling setup, suspense peaks at the end!', status: 'approved', created_at: new Date().toISOString(), updated_at: new Date().toISOString() }
+  { id: 'com-4', user_id: 'usr-5', video_id: 'vid-4', parent_id: null, body: 'Hahaha Rohit bhai, you are too funny! 😂', status: 'approved', created_at: new Date(Date.now() - 3 * 24 * 3600000).toISOString(), updated_at: new Date().toISOString() },
+  { id: 'com-5', user_id: 'usr-7', video_id: 'vid-5', parent_id: null, body: 'Very thrilling setup, suspense peaks at the end!', status: 'approved', created_at: new Date().toISOString(), updated_at: new Date().toISOString() }
 ];
 
 const SEED_LIKES: Like[] = [
   { id: 'lk-1', user_id: 'usr-2', video_id: 'vid-1', created_at: new Date().toISOString() },
   { id: 'lk-2', user_id: 'usr-3', video_id: 'vid-1', created_at: new Date().toISOString() },
   { id: 'lk-3', user_id: 'usr-4', video_id: 'vid-1', created_at: new Date().toISOString() },
-  { id: 'lk-4', user_id: 'usr-1', video_id: 'vid-short-1', created_at: new Date().toISOString() },
-  { id: 'lk-5', user_id: 'usr-3', video_id: 'vid-short-1', created_at: new Date().toISOString() },
-  { id: 'lk-6', user_id: 'usr-6', video_id: 'vid-4', created_at: new Date().toISOString() },
-  { id: 'lk-7', user_id: 'usr-7', video_id: 'vid-4', created_at: new Date().toISOString() }
+  { id: 'lk-4', user_id: 'usr-1', video_id: 'vid-4', created_at: new Date().toISOString() },
+  { id: 'lk-5', user_id: 'usr-3', video_id: 'vid-4', created_at: new Date().toISOString() },
+  { id: 'lk-6', user_id: 'usr-6', video_id: 'vid-5', created_at: new Date().toISOString() },
+  { id: 'lk-7', user_id: 'usr-7', video_id: 'vid-5', created_at: new Date().toISOString() }
 ];
 
 const SEED_FOLLOWS: Follow[] = [
@@ -892,7 +368,8 @@ const SEED_AI_ANALYSIS: AIAnalysis[] = SEED_VIDEOS.slice(0, 5).map((v, i) => ({
 }));
 
 export const initializeLocalDb = () => {
-  const needsInit = !localStorage.getItem(DB_PREFIX + 'initialized_v33') || 
+  const currentKey = DB_PREFIX + 'initialized_v35';
+  const needsInit = !localStorage.getItem(currentKey) || 
                     !localStorage.getItem(DB_PREFIX + 'videos') || 
                     JSON.parse(localStorage.getItem(DB_PREFIX + 'videos') || '[]').length === 0;
 
@@ -917,7 +394,7 @@ export const initializeLocalDb = () => {
     setStorageItem('ai_analysis', SEED_AI_ANALYSIS);
     setStorageItem('content_events', []);
     setStorageItem('currentUser', SEED_PROFILES[0]); // Logged in as Alex Rivera by default for immediate preview
-    localStorage.setItem(DB_PREFIX + 'initialized_v33', 'true');
+    localStorage.setItem(currentKey, 'true');
   }
 };
 
